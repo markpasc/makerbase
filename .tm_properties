@@ -1,0 +1,5 @@
+softTabs = true
+showInvisibles = true
+
+[ *.html ]
+fileType = text.html.jinja
