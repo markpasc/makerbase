@@ -1,0 +1,26 @@
+@font-face {
+    font-family: "Ostrich Sans";
+    src: url("ostrich-sans/ostrich-regular-webfont.eot");
+    src: local("☺"),
+        url("ostrich-sans/ostrich-regular-webfont.woff") format("woff"),
+        url("ostrich-sans/ostrich-regular-webfont.otf") format("opentype"),
+        url("ostrich-sans/ostrich-regular-webfont.svg#filename") format("svg");
+}
+
+body, p {
+    font-size: 1em;
+}
+
+h1 {
+    display: inline-block;
+    margin: 0;
+    padding: 0.2ex 0.5ex 0ex 0.5ex;
+
+    font-family: "Ostrich Sans", sans-serif;
+    font-size: 3em;
+    line-height: 1em;
+
+    /*background: -webkit-gradient(linear, left top, right top, from(#39B4FF), to(#32DA10));*/
+    background: #F24F1A;
+    color: white;
+}
