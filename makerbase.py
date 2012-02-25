@@ -28,7 +28,9 @@ def project(slug):
         # TODO: don't 404, but rather offer to create the project?
         abort(404)
 
-    return render_template('project.html', project=proj)
+    participants = (link.get() for link in proj.get_links())
+
+    return render_template('project.html', project=proj, participants=participants)
 
 
 @app.route('/maker/<slug>')
@@ -39,6 +41,10 @@ def maker(slug):
 @app.errorhandler(404)
 def not_found(exc):
     return render_template('not_found.html')
+
+
+class LinkError(Exception):
+    pass
 
 
 class Robject(object):
@@ -77,6 +83,26 @@ class Robject(object):
         else:
             entity.set_data(self.get_entity_data())
         entity.store()
+
+    def get_links(self, tag=None):
+        try:
+            entity = self._entity
+        except AttributeError:
+            return list()
+        if tag is None:
+            return entity.get_links()
+        return (link for link in entity.get_links() if link.tag == tag)
+
+    def add_link(self, target, tag=None):
+        try:
+            entity = self._entity
+        except AttributeError:
+            raise LinkError("Can't add link to %r as it doesn't yet have an entity" % self)
+        try:
+            target_entity = target._entity
+        except AttributeError:
+            raise LinkError("Can't add link pointing to %r as it doesn't yet have an entity" % self)
+        entity.add_link(target_entity, tag=tag)
 
 
 class Project(Robject):
