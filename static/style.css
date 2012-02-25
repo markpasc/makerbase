@@ -16,11 +16,39 @@ h1 {
     margin: 0;
     padding: 0.2ex 0.5ex 0ex 0.5ex;
 
+    position: absolute;
+    left: 0;
+
+    background: -webkit-gradient(linear, left top, right top, from(#39B4FF), to(#32DA10));
+    /*background: #F24F1A;*/
+    color: white;
+}
+
+h1, h2 {
     font-family: "Ostrich Sans", sans-serif;
     font-size: 3em;
     line-height: 1em;
+}
 
-    /*background: -webkit-gradient(linear, left top, right top, from(#39B4FF), to(#32DA10));*/
-    background: #F24F1A;
-    color: white;
+.container {
+    width: 720px;
+}
+
+h2 {
+    background: transparent;
+    color: black;
+}
+
+h2 a {
+    color: black;
+}
+h2 a:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+.project-logo {
+    display: inline-block;
+    float: left;
+    margin: 0 1em 1ex 0;
 }

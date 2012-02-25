@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <a href="" class="project-logo">
+    {% if project.avatar_url %}
+        <img src="{{ project.avatar_url }}" width="150" height="150">
+    {% else %}
+        <img src="{{ url_for('static', filename='default-project.png') }}" width="150" height="150">
+    {% endif %}
+    </a>
+
+    <h2><a href="">{{ project.name }}</a></h2>
+
+    {% if project.description %}
+        <p>{{ project.description }}</p>
+    {% endif %}
+
+    {% for party in participants %}
+
+        <div>
+            {% if party.person.avatar_url %}
+                <img src="{{ party.person.avatar_url }}" width="75" height="75">
+            {% else %}
+                <img src="{{ url_for('static', filename='default-person.png') }}" width="75" height="75">
+            {% endif %}
+
+            <h3><a href="{{ url_for('maker', slug=party.person.slug) }}">{{ party.person.name }}</a></h3>
+            <p>
+                {{ party.role }}<br>
+                {{ party.start }} &mdash; {{ party.end }}
+            </p>
+
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

@@ -2,7 +2,7 @@ import json
 from urllib import urlencode
 from urlparse import parse_qs, urlunsplit
 
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, abort, redirect, render_template, request, url_for
 from flaskext.login import LoginManager, login_user
 import requests
 import riak
@@ -21,7 +21,76 @@ def home():
     return render_template('home.html')
 
 
-class User(object):
+@app.route('/project/<slug>')
+def project(slug):
+    proj = Project.get(slug)
+    if proj is None:
+        # TODO: don't 404, but rather offer to create the project?
+        abort(404)
+
+    return render_template('project.html', project=proj)
+
+
+@app.route('/maker/<slug>')
+def maker(slug):
+    raise NotImplementedError()
+
+
+@app.errorhandler(404)
+def not_found(exc):
+    return render_template('not_found.html')
+
+
+class Robject(object):
+
+    _bucket = None
+
+    def __init__(self, *args, **kwargs):
+        if args:
+            self.id = args[0]
+        if kwargs:
+            self.__dict__.update(kwargs)
+
+    @classmethod
+    def get(cls, userid):
+        entity = riakclient.bucket(cls._bucket).get(userid.encode('utf-8'))
+        if not entity or not entity.exists():
+            app.logger.warning("Tried to load %s with id %r but found none", cls.__name__, userid)
+            return None
+
+        self = cls()
+        self.__dict__.update(entity.get_data())
+        self.id = userid
+        self._entity = entity
+        app.logger.debug("Found for %s id %r entity %r! Returning %s %r!", cls._bucket, userid, entity, cls.__name__, self)
+        return self
+
+    def get_entity_data(self):
+        return dict((k, v) for k, v in self.__dict__.iteritems() if not k.startswith('_'))
+
+    def save(self):
+        try:
+            entity = self._entity
+        except AttributeError:
+            entity = riakclient.bucket(self._bucket).new(self.id.encode('utf-8'), data=self.get_entity_data())
+            self._entity = entity
+        else:
+            entity.set_data(self.get_entity_data())
+        entity.store()
+
+
+class Project(Robject):
+    _bucket = 'project'
+
+class Maker(Robject):
+    _bucket = 'maker'
+
+class Participation(Robject):
+    _bucket = 'participation'
+
+class User(Robject):
+
+    _bucket = 'user'
 
     def is_authenticated(self):
         return True
@@ -35,33 +104,6 @@ class User(object):
 
     def get_id(self):
         return self.id
-
-    @classmethod
-    def get(cls, userid):
-        entity = riakclient.bucket('user').get(userid.encode('utf-8'))
-        if not entity or not entity.exists():
-            app.logger.warning("Tried to load user with id %r but found none", userid)
-            return None
-
-        self = cls()
-        self.__dict__.update(entity.get_data())
-        self.id = userid
-        self._entity = entity
-        app.logger.debug("Found for user id %r entity %r! Returning user %r!", userid, entity, self)
-        return self
-
-    def get_entity_data(self):
-        return dict((k, v) for k, v in self.__dict__.iteritems() if not k.startswith('_'))
-
-    def save(self):
-        try:
-            entity = self._entity
-        except AttributeError:
-            entity = riakclient.bucket('user').new(self.id.encode('utf-8'), data=self.get_entity_data())
-            self._entity = entity
-        else:
-            entity.set_data(self.get_entity_data())
-        entity.store()
 
 login_manager.user_loader(User.get)
 
@@ -96,8 +138,7 @@ def complete_github():
     userid = u"github:%s" % github_user['login']
     user = User.get(userid)
     if user is None:
-        user = User()
-        user.id = userid
+        user = User(userid)
     user.name = github_user['name']
     user.avatar_url = github_user['avatar_url']
     user.profile_url = github_user['html_url']
