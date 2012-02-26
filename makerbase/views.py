@@ -15,6 +15,11 @@ login_manager.setup_app(app, add_context_processor=True)
 login_manager.user_loader(User.get)
 
 
+@app.template_filter('date')
+def date(dt, format):
+    return dt.strftime(format)
+
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -27,9 +32,7 @@ def project(slug):
         # TODO: don't 404, but rather offer to create the project?
         abort(404)
 
-    participants = (link.get() for link in proj.get_links())
-
-    return render_template('project.html', project=proj, participants=participants)
+    return render_template('project.html', project=proj)
 
 
 @app.route('/maker/<slug>')

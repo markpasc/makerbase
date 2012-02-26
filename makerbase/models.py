@@ -1,6 +1,8 @@
+import datetime
 import json
 from urllib import urlencode
 from urlparse import parse_qs, urlunsplit
+import uuid
 
 import riak
 
@@ -16,10 +18,36 @@ class LinkError(Exception):
 
 class RobjectMetaclass(type):
 
+    class_for_bucket = dict()
+
     def __new__(cls, name, bases, attr):
         if '_bucket' not in attr:
             attr['_bucket'] = name.lower()
-        return type.__new__(cls, name, bases, attr)
+        new_cls = type.__new__(cls, name, bases, attr)
+        cls.class_for_bucket[attr['_bucket']] = new_cls
+        return new_cls
+
+
+class Link(object):
+
+    def __init__(self, tag):
+        self.tag = tag
+
+    def __get__(self, instance, cls):
+        if instance is None:
+            return self
+        return instance.get_link(self.tag)
+
+
+class LinkSet(object):
+
+    def __init__(self, tag):
+        self.tag = tag
+
+    def __get__(self, instance, cls):
+        if instance is None:
+            return self
+        return instance.get_links(self.tag)
 
 
 class Robject(object):
@@ -34,18 +62,38 @@ class Robject(object):
         if kwargs:
             self.__dict__.update(kwargs)
 
+    @property
+    def id(self):
+        try:
+            return self.__dict__['_id']
+        except KeyError:
+            ident = str(uuid.uuid1())
+            self.__dict__['_id'] = ident
+            return ident
+
+    @id.setter
+    def id(self, value):
+        if isinstance(value, unicode):
+            value = value.encode('utf-8')
+        self.__dict__['_id'] = value
+
     @classmethod
-    def get(cls, userid):
-        entity = riakclient.bucket(cls._bucket).get(userid.encode('utf-8'))
+    def _new_for_entity(cls, entity):
+        self = cls(entity.get_key(), **entity.get_data())
+        self._entity = entity
+        return self
+
+    @classmethod
+    def get(cls, ident):
+        if isinstance(ident, unicode):
+            ident = ident.encode('utf-8')
+        entity = riakclient.bucket(cls._bucket).get(ident)
         if not entity or not entity.exists():
-            app.logger.warning("Tried to load %s with id %r but found none", cls.__name__, userid)
+            app.logger.warning("Tried to load %s with id %r but found none", cls.__name__, ident)
             return None
 
-        self = cls()
-        self.__dict__.update(entity.get_data())
-        self.id = userid
-        self._entity = entity
-        app.logger.debug("Found for %s id %r entity %r! Returning %s %r!", cls._bucket, userid, entity, cls.__name__, self)
+        self = cls._new_for_entity(entity)
+        app.logger.debug("Found for %s id %r entity %r! Returning %s %r!", cls._bucket, ident, entity, cls.__name__, self)
         return self
 
     def get_entity_data(self):
@@ -55,20 +103,31 @@ class Robject(object):
         try:
             entity = self._entity
         except AttributeError:
-            entity = riakclient.bucket(self._bucket).new(self.id.encode('utf-8'), data=self.get_entity_data())
+            entity = riakclient.bucket(self._bucket).new(self.id, data=self.get_entity_data())
             self._entity = entity
         else:
             entity.set_data(self.get_entity_data())
         entity.store()
 
+    def delete(self):
+        try:
+            entity = self._entity
+        except AttributeError:
+            pass
+        else:
+            entity.delete()
+
+    def get_link(self, tag=None):
+        return self.get_links(tag).next()
+
     def get_links(self, tag=None):
         try:
             entity = self._entity
         except AttributeError:
-            return list()
+            return iter()
         if tag is None:
-            return entity.get_links()
-        return (link for link in entity.get_links() if link.tag == tag)
+            return iter(entity.get_links())
+        return (RobjectMetaclass.class_for_bucket[link.get_bucket()]._new_for_entity(link.get()) for link in entity.get_links() if link.get_tag() == tag)
 
     def add_link(self, target, tag=None):
         try:
@@ -83,15 +142,29 @@ class Robject(object):
 
 
 class Project(Robject):
-    pass
+
+    parties = LinkSet('participation')
 
 
 class Maker(Robject):
-    pass
+
+    parties = LinkSet('participation')
 
 
 class Participation(Robject):
-    pass
+
+    maker = Link('maker')
+    project = Link('project')
+
+    @property
+    def start_date(self):
+        return datetime.date(year=self.start_year, month=self.start_month + 1, day=1)
+
+    @property
+    def end_date(self):
+        if not self.end_year:
+            return
+        return datetime.date(year=self.end_year, month=self.end_month + 1, day=1)
 
 
 class User(Robject):

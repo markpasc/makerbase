@@ -27,6 +27,12 @@
         <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
         <link rel="apple-touch-icon" sizes="72x72" href="{{ url_for('static', filename='images/apple-touch-icon-72x72.png') }}">
         <link rel="apple-touch-icon" sizes="114x114" href="{{ url_for('static', filename='images/apple-touch-icon-114x114.png') }}">
+        <script type="text/javascript">
+            window.jqq = [];
+            window.$ = function(f) {
+                jqq.push(f);
+            };
+        </script>
     </head>
 
     <body>
@@ -65,7 +71,14 @@
         <!-- Le javascript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+        <script type="text/javascript">
+            $.each(jqq, function(i, val) {
+                $(val);
+            });
+        </script>
+        <script type="text/javascript" src="{{ url_for('static', filename='d3.v2.js') }}"></script>
+        <!--
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-transition.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-alert.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-modal.js') }}"></script>
@@ -78,6 +91,7 @@
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-collapse.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-carousel.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-typeahead.js') }}"></script>
+        -->
 
     </body>
 </html>

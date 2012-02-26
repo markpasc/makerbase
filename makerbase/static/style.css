@@ -47,8 +47,30 @@ h2 a:hover {
     text-decoration: underline;
 }
 
-.project-logo {
+.project-logo, .maker-logo {
     display: inline-block;
     float: left;
     margin: 0 1em 1ex 0;
+}
+
+#project-chart {
+    margin: 4ex 0;
+}
+
+#project-chart #first-month {
+    float: left;
+}
+
+#project-chart #last-month {
+    float: right;
+}
+
+#project-chart .month {
+    position: relative;
+    overflow: hidden;
+    height: 1em;
+    border: 1px dashed black;
+    text-align: center;
+    padding: 1ex 0;
+    margin-bottom: 1ex;
 }
