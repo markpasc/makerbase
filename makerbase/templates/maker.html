@@ -2,44 +2,45 @@
 
 {% block content %}
 
-    <div class="project clearfix">
+    <div class="maker clearfix">
 
-        <a href="{{ url_for('project', slug=project._id) }}" class="project-logo big-logo">
-        {% if project.avatar_url %}
-            <img src="{{ project.avatar_url }}" width="150" height="150" alt="">
+        <a href="{{ url_for('maker', slug=maker._id) }}" class="maker-logo big-logo">
+        {% if maker.avatar_url %}
+            <img src="{{ maker.avatar_url }}" width="150" height="150" alt="">
         {% else %}
-            <img src="{{ url_for('static', filename='default-project.png') }}" width="150" height="150" alt="">
+            <img src="{{ url_for('static', filename='default-maker.png') }}" width="150" height="150" alt="">
         {% endif %}
         </a>
 
-        <h2><a href="{{ url_for('project', slug=project._id) }}">{{ project.name }}</a></h2>
+        <h2><a href="{{ url_for('maker', slug=maker._id) }}">{{ maker.name }}</a></h2>
 
-        {% if project.html_url %}
+        {% if maker.html_url %}
             <p>
-                <a href="{{ project.html_url }}" rel="nofollow">{{ project.html_url|pretty_url }}</a>
-                <a class="icon-share-alt" href="{{ project.html_url }}" rel="nofollow"></a>
+                <a href="{{ maker.html_url }}" rel="nofollow">{{ maker.html_url|pretty_url }}</a>
+                <a class="icon-share-alt" href="{{ maker.html_url }}" rel="nofollow"></a>
             </p>
         {% endif %}
 
-        {% if project.description %}
-            <p>{{ project.description }}</p>
+        {% if maker.description %}
+            <p>{{ maker.description }}</p>
         {% endif %}
 
     </div>
 
-    {% for party in project.parties %}
+    {% for party in maker.parties %}
 
         <div class="participant clearfix">
 
-            <a href="{{ url_for('maker', slug=party.maker._id) }}" class="maker-logo">
-            {% if party.maker.avatar_url %}
-                <img src="{{ party.maker.avatar_url }}" width="75" height="75" alt="">
+            <a href="{{ url_for('project', slug=party.project._id) }}" class="project-logo">
+            {% if party.project.avatar_url %}
+                <img src="{{ party.project.avatar_url }}" width="75" height="75" alt="">
             {% else %}
-                <img src="{{ url_for('static', filename='default-maker.png') }}" width="75" height="75" alt="">
+                <img src="{{ url_for('static', filename='default-project.png') }}" width="75" height="75" alt="">
             {% endif %}
             </a>
 
-            <h3><a href="{{ url_for('maker', slug=party.maker._id) }}">{{ party.maker.name }}</a></h3>
+            <h3><a href="{{ url_for('project', slug=party.project._id) }}">{{ party.project.name }}</a></h3>
+
             <p>
                 {{ party.role }}<br>
                 {{ party.start_date|date('%B %Y') }}
@@ -55,6 +56,7 @@
 
     {% endfor %}
 
+
     <div id="project-chart">
         <div class="clearfix">
             <h3 id="first-month" class="bounds"></h3>
@@ -68,9 +70,9 @@
         var nowMonth = now.getFullYear() * 12 + now.getMonth();
 
         var months = [
-            {% for party in project.parties %}
+            {% for party in maker.parties %}
                 {
-                    name: '{{ party.maker.name }}',
+                    name: '{{ party.project.name }}',
                     start: {{ party.start_year }} * 12 + {{ party.start_month }},
                     {% if party.end_year %}
                     end: {{ party.end_year }} * 12 + {{ party.end_month }}

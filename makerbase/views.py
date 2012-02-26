@@ -1,6 +1,6 @@
 import json
 from urllib import urlencode
-from urlparse import parse_qs, urlunsplit
+from urlparse import parse_qs, urlsplit, urlunsplit
 
 from flask import abort, redirect, render_template, request, url_for
 from flaskext.login import LoginManager, login_user
@@ -16,8 +16,21 @@ login_manager.user_loader(User.get)
 
 
 @app.template_filter('date')
-def date(dt, format):
+def date_format(dt, format):
     return dt.strftime(format)
+
+
+@app.template_filter('pretty_url')
+def pretty_url(url):
+    urlparts = urlsplit(url)
+    host, path = urlparts.netloc, urlparts.path
+    if host.startswith('www.'):
+        host = host[4:]
+    if path == '/':
+        path = ''
+    elif len(path) > 23:
+        path = path[:20] + '...'
+    return host + path
 
 
 @app.route('/')
@@ -37,7 +50,12 @@ def project(slug):
 
 @app.route('/maker/<slug>')
 def maker(slug):
-    raise NotImplementedError()
+    maker = Maker.get(slug)
+    if maker is None:
+        # TODO: don't 404, but offer to create a page for this maker?
+        abort(404)
+
+    return render_template('maker.html', maker=maker)
 
 
 @app.errorhandler(404)

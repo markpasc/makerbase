@@ -2,6 +2,40 @@ import makerbase
 from makerbase.models import *
 
 
+"""
+user: {
+    'id':
+    'name':
+    'avatar_url':
+    'html_url':
+    <link to person?>
+}
+
+maker: {
+    'name':
+    'avatar_url':
+    'html_url':
+}
+
+project: {
+    'name':
+    'description':
+    'avatar_url':
+    'html_url':
+}
+
+participation: {
+    <link to person>
+    <link to project>
+    'role': "140 char description"
+    'start_year': 2012
+    'start_month': 0
+    'end_year': 2012
+    'end_year': 1
+}
+"""
+
+
 def blit(cls, ident):
     obj = cls.get(ident)
     if obj is not None:
@@ -14,6 +48,7 @@ mlkshk = Project(
     name='MLKSHK',
     description='A site for sharing pictures.',
     html_url='http://mlkshk.com/',
+    avatar_url='https://mlkshk.com/r/2NOE',
 )
 mlkshk.save()
 
@@ -31,7 +66,7 @@ andre = Maker(
     'torrez',
     name='Andre Torrez',
     html_url='http://torrez.org/',
-    avatar_url='',
+    avatar_url='https://si0.twimg.com/profile_images/1788942159/black-log.gif',
 )
 andre.save()
 
@@ -39,8 +74,8 @@ blit(Maker, 'amberdawn')
 amber = Maker(
     'amber',
     name='Amber Costley',
-    html_url='',
-    avatar_url='',
+    html_url='http://ambercostley.com/',
+    avatar_url='https://si0.twimg.com/profile_images/1452719858/twit.jpg',
 )
 amber.save()
 

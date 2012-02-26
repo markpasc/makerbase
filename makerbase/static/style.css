@@ -51,6 +51,13 @@ h2 a:hover {
     display: inline-block;
     float: left;
     margin: 0 1em 1ex 0;
+    width: 75px;
+    height: 75px;
+}
+
+.big-logo {
+    width: 150px;
+    height: 150px;
 }
 
 #project-chart {
