@@ -73,7 +73,7 @@ def edit_project(slug):
         form.populate_obj(proj)
         proj.save()
 
-        flash('derp')
+        flash(u'Your changes to %s have been saved.' % proj.name, 'success')
         return redirect(url_for('project', slug=slug))
 
     return render_template('edit_project.html', form=form, project=proj)
