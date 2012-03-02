@@ -2,11 +2,12 @@ import json
 from urllib import urlencode
 from urlparse import parse_qs, urlsplit, urlunsplit
 
-from flask import abort, redirect, render_template, request, url_for
-from flaskext.login import LoginManager, login_user
+from flask import abort, redirect, render_template, request, url_for, flash
+from flaskext.login import LoginManager, login_user, login_required
 import requests
 
 from makerbase import app
+from makerbase.forms import ProjectForm
 from makerbase.models import *
 
 
@@ -56,6 +57,26 @@ def maker(slug):
         abort(404)
 
     return render_template('maker.html', maker=maker)
+
+
+@app.route('/project/<slug>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_project(slug):
+    proj = Project.get(slug)
+    if proj is None:
+        # TODO: don't 404, but rather offer to create the project?
+        abort(404)
+
+    form = ProjectForm(request.form, proj)
+    if request.method == 'POST' and form.validate():
+        # TODO: save a historical project item
+        form.populate_obj(proj)
+        proj.save()
+
+        flash('derp')
+        return redirect(url_for('project', slug=slug))
+
+    return render_template('edit_project.html', form=form, project=proj)
 
 
 @app.errorhandler(404)

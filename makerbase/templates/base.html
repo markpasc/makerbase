@@ -9,22 +9,9 @@
 
         <!-- Le styles -->
         <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" rel="stylesheet">
-        <style>
+        <style type="text/css">
             body {
                 padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-            }
-            #github-signin-btn {
-                line-height: 22px;
-            }
-            #github-signin-btn:before {
-                display: inline-block;
-                vertical-align: middle;
-                content: "";
-                width: 22px;
-                height: 22px;
-                padding: 0;
-                margin: 0;
-                background: transparent url({{ url_for('static', filename='auth-icons.png') }}) no-repeat -44px 0px;
             }
         </style>
         <link href="{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.css') }}" rel="stylesheet" type="text/css">
@@ -46,6 +33,24 @@
                 jqq.push(f);
             };
         </script>
+
+        {% block htmlhead %}
+        <style type="text/css">
+            #github-signin-btn {
+                line-height: 22px;
+            }
+            #github-signin-btn:before {
+                display: inline-block;
+                vertical-align: middle;
+                content: "";
+                width: 22px;
+                height: 22px;
+                padding: 0;
+                margin: 0;
+                background: transparent url({{ url_for('static', filename='auth-icons.png') }}) no-repeat -44px 0px;
+            }
+        </style>
+        {% endblock %}
     </head>
 
     <body>

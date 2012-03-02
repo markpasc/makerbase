@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
+{% block htmlhead %}
+    {{ super() }}
+    <style type="text/css">
+        #edit-button {
+            float: right;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 
     <div class="project clearfix">
@@ -11,6 +20,12 @@
             <img src="{{ url_for('static', filename='default-project.png') }}" width="150" height="150" alt="">
         {% endif %}
         </a>
+
+        {% if current_user.is_authenticated() %}
+            <p id="edit-button">
+                <a class="btn btn-success" href="{{ url_for('edit_project', slug=project._id) }}"><i class="icon-edit icon-white"></i> Edit {{ project.name }}</a>
+            </p>
+        {% endif %}
 
         <h2><a href="{{ url_for('project', slug=project._id) }}">{{ project.name }}</a></h2>
 
