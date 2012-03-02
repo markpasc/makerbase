@@ -13,6 +13,19 @@
             body {
                 padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
             }
+            #github-signin-btn {
+                line-height: 22px;
+            }
+            #github-signin-btn:before {
+                display: inline-block;
+                vertical-align: middle;
+                content: "";
+                width: 22px;
+                height: 22px;
+                padding: 0;
+                margin: 0;
+                background: transparent url({{ url_for('static', filename='auth-icons.png') }}) no-repeat -44px 0px;
+            }
         </style>
         <link href="{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
@@ -62,7 +75,17 @@
 
         <div class="container">
 
-            <h1><a href="{{ url_for('home') }}">makerbase</a></h1>
+            <div>
+                <h1><a href="{{ url_for('home') }}">makerbase</a></h1>
+
+                {% if current_user.is_anonymous() %}
+                    <a id="github-signin-btn" class="btn" href="{{ url_for('signin_github') }}">
+                        Sign in with <strong>GitHub</strong>
+                    </a>
+                {% else %}
+                    NO BUTTON
+                {% endif %}
+            </div>
 
             {% block content %}
             {% endblock %}
