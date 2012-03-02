@@ -11,7 +11,7 @@ body {
     padding-top: 0;
 }
 
-body, p {
+body, div, p, label, input {
     font-size: 1em;
 }
 
