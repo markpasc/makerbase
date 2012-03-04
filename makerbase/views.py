@@ -1,10 +1,13 @@
 import json
+import traceback
 from urllib import urlencode
 from urlparse import parse_qs, urlsplit, urlunsplit
 
-from flask import abort, redirect, render_template, request, url_for, flash
-from flaskext.login import LoginManager, login_user, login_required
+from flask import abort, flash, redirect, render_template, request, Response, url_for
+from flask.views import MethodView
+from flaskext.login import LoginManager, current_user, login_user, login_required
 import requests
+from werkzeug.datastructures import MultiDict
 
 from makerbase import app
 from makerbase.forms import ProjectForm
@@ -46,7 +49,12 @@ def project(slug):
         # TODO: don't 404, but rather offer to create the project?
         abort(404)
 
-    return render_template('project.html', project=proj)
+    if current_user.is_authenticated():
+        project_form = ProjectForm(request.form, proj)
+    else:
+        project_form = None
+
+    return render_template('project.html', project=proj, project_form=project_form)
 
 
 @app.route('/maker/<slug>')
@@ -59,24 +67,52 @@ def maker(slug):
     return render_template('maker.html', maker=maker)
 
 
-@app.route('/project/<slug>/edit', methods=['GET', 'POST'])
-@login_required
-def edit_project(slug):
-    proj = Project.get(slug)
-    if proj is None:
-        # TODO: don't 404, but rather offer to create the project?
-        abort(404)
+class RobjectView(MethodView):
 
-    form = ProjectForm(request.form, proj)
-    if request.method == 'POST' and form.validate():
+    def dispatch_request(self, *args, **kwargs):
+        try:
+            return super(RobjectView, self).dispatch_request(*args, **kwargs)
+        except Exception, exc:
+            return Response(json.dumps({
+                "errors": [traceback.format_exc().split('\n')],
+            }), 500)
+
+    def render(self, obj):
+        return json.dumps(obj.get_entity_data())
+
+
+class ProjectAPI(RobjectView):
+
+    def get(self, slug):
+        # TODO: support a None slug for getting the project collection?
+        proj = Project.get(slug)
+        if proj is None:
+            abort(404)
+
+        return self.render(proj)
+
+    @login_required
+    def post(self, slug):
+        proj = Project.get(slug)
+        if proj is None:
+            abort(404)
+
+        proj_data = json.loads(request.data)
+
+        form = ProjectForm(MultiDict(proj_data), proj)
+        if not form.validate():
+            return Response(json.dumps({
+                "errors": form.errors,
+            }), 400)
+
         # TODO: save a historical project item
         form.populate_obj(proj)
         proj.save()
 
-        flash(u'Your changes to %s have been saved.' % proj.name, 'success')
-        return redirect(url_for('project', slug=slug))
+        return self.render(proj)
 
-    return render_template('edit_project.html', form=form, project=proj)
+
+app.add_url_rule('/api/project/<slug>', view_func=ProjectAPI.as_view('api_project'))
 
 
 @app.errorhandler(404)

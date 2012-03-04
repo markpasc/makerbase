@@ -11,7 +11,7 @@
 
 {% block content %}
 
-    <div class="project clearfix">
+    <div id="project" class="project clearfix">
 
         <a href="{{ url_for('project', slug=project._id) }}" class="project-logo big-logo">
         {% if project.avatar_url %}
@@ -23,7 +23,7 @@
 
         {% if current_user.is_authenticated() %}
             <p id="edit-button">
-                <a class="btn btn-success" href="{{ url_for('edit_project', slug=project._id) }}"><i class="icon-edit icon-white"></i> Edit {{ project.name }}</a>
+                <button class="btn btn-success"><i class="icon-edit icon-white"></i> Edit {{ project.name }}</button>
             </p>
         {% endif %}
 
@@ -39,8 +39,49 @@
         {% if project.description %}
             <p>{{ project.description }}</p>
         {% endif %}
-
     </div>
+
+    {% if current_user.is_authenticated() %}
+        {% from "_form.html" import render_field %}
+        <form id="project-form" class="form-horizontal hidden" action="{{ url_for('api_project', slug=project._id) }}" method="POST">
+            <fieldset>
+                <legend>Edit {{ project.name }}</legend>
+                {{ render_field(project_form.name) }}
+                {{ render_field(project_form.avatar_url) }}
+                {{ render_field(project_form.html_url) }}
+                {{ render_field(project_form.description) }}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button class="btn cancel">Cancel</button>
+                </div>
+            </fieldset>
+        </form>
+
+        <script type="text/javascript">
+            $(function () {
+                $('#edit-button button').click(function () {
+                    $('#project').hide();
+                    $('#project-form').show().removeClass('hidden');
+                    return false;
+                });
+                $('#project-form button.cancel').click(function () {
+                    $('#project-form').hide();
+                    $('#project').show();
+                    return false;
+                });
+
+                $('#project-form').apiForm({
+                    success: function () {
+                        console.log('SUCCESS');
+                        window.location.reload();
+                    },
+                    error: function () {
+                        console.log('ERR');
+                    }
+                });
+            });
+        </script>
+    {% endif %}
 
     {% for party in project.parties %}
 
