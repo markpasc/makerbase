@@ -1,15 +1,14 @@
 {% macro render_field(field) %}
     <div class="control-group">
-        <label class="control-label" for="{{ field.id }}">{{ field.label.text }}</label>
-        <div class="controls">
-            {% if field.type == 'BooleanField' %}
-                MOO
-            {% else %}
-                <input class="input-xlarge" id="{{ field.id }}" name="{{ field.name }}" value="{{ field.data }}">
-            {% endif %}
-            {% if field.description %}
-                <p class="help-block">{{ field.description }}</p>
-            {% endif %}
-        </div>
+        {% if field.type == 'BooleanField' %}
+            <label><input type="checkbox" id="{{ field.id }}" name="{{ field.name }}" {% if field.data %}checked="checked"{% endif %} value="1"> {{ field.label.text }}</label>
+        {% elif field.type == 'HiddenField' %}
+            <input type="hidden" id="{{ field.id }}" name="{{ field.name }}" value="{{ field.data }}">
+        {% else %}
+            <input class="input-xxlarge" id="{{ field.id }}" name="{{ field.name }}" value="{{ field.data }}" placeholder="{{ field.label.text }}">
+        {% endif %}
+        {% if field.type != 'HiddenField' and field.description %}
+            <p class="help-block">{{ field.description }}</p>
+        {% endif %}
     </div>
 {% endmacro %}

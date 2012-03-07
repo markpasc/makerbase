@@ -15,10 +15,14 @@ body, div, p, label, input {
     font-size: 1em;
 }
 
-h1, h2 {
+h1, h2, #project-form input[name="name"] {
     font-family: "Ostrich Sans", sans-serif;
     font-size: 3em;
     line-height: 1em;
+}
+
+#project-form input[name="name"] {
+    height: 0.8em;
 }
 
 h1 {

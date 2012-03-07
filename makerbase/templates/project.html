@@ -43,13 +43,19 @@
 
     {% if current_user.is_authenticated() %}
         {% from "_form.html" import render_field %}
-        <form id="project-form" class="form-horizontal hidden" action="{{ url_for('api_project', slug=project._id) }}" method="POST">
+        <form id="project-form" class="form-inline hidden" action="{{ url_for('api_project', slug=project._id) }}" method="POST">
+            <a href="{{ url_for('project', slug=project._id) }}" class="project-logo big-logo">
+            {% if project.avatar_url %}
+                <img src="{{ project.avatar_url }}" width="150" height="150" alt="">
+            {% else %}
+                <img src="{{ url_for('static', filename='default-project.png') }}" width="150" height="150" alt="">
+            {% endif %}
+            </a>
             <fieldset>
-                <legend>Edit {{ project.name }}</legend>
                 {{ render_field(project_form.name) }}
-                {{ render_field(project_form.avatar_url) }}
                 {{ render_field(project_form.html_url) }}
                 {{ render_field(project_form.description) }}
+                {{ render_field(project_form.avatar_url) }}
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Save changes</button>
                     <button class="btn cancel">Cancel</button>
