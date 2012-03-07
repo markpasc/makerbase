@@ -10,7 +10,7 @@ import requests
 from werkzeug.datastructures import MultiDict
 
 from makerbase import app
-from makerbase.forms import ProjectForm
+from makerbase.forms import ProjectForm, ParticipationForm
 from makerbase.models import *
 
 
@@ -49,12 +49,16 @@ def project(slug):
         # TODO: don't 404, but rather offer to create the project?
         abort(404)
 
+    parties = list(proj.parties)
+
     if current_user.is_authenticated():
-        project_form = ProjectForm(request.form, proj)
+        project_form = ProjectForm(obj=proj)
+        for party in parties:
+            party.form = ParticipationForm(obj=party)
     else:
         project_form = None
 
-    return render_template('project.html', project=proj, project_form=project_form)
+    return render_template('project.html', project=proj, parties=parties, project_form=project_form)
 
 
 @app.route('/maker/<slug>')
@@ -108,6 +112,21 @@ class ProjectAPI(RobjectView):
         # TODO: save a historical project item
         form.populate_obj(proj)
         proj.save()
+
+        for party_data in proj_data['parties']:
+            party_id = party_data.get('_id')
+            if party_id is None:
+                continue
+            party = Participation.get(party_id)
+
+            form = ParticipationForm(MultiDict(party_data), party)
+            if not form.validate():
+                return Response(json.dumps({
+                    'errors': form.errors,
+                }), 400)
+
+            form.populate_obj(party)
+            party.save()
 
         return self.render(proj)
 

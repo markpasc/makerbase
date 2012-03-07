@@ -160,11 +160,31 @@ class Participation(Robject):
     def start_date(self):
         return datetime.date(year=self.start_year, month=self.start_month + 1, day=1)
 
+    @start_date.setter
+    def start_date(self, dt):
+        self.start_year = dt.year
+        self.start_month = dt.month - 1
+
     @property
     def end_date(self):
         if not self.end_year:
             return
         return datetime.date(year=self.end_year, month=self.end_month + 1, day=1)
+
+    @end_date.setter
+    def end_date(self, dt):
+        if dt is None:
+            try:
+                del self.end_year
+            except AttributeError:
+                pass
+            try:
+                del self.end_month
+            except AttributeError:
+                pass
+            return
+        self.end_year = dt.year
+        self.end_month = dt.month - 1
 
 
 class User(Robject):

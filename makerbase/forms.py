@@ -1,6 +1,13 @@
 # coding=utf-8
 
-from wtforms import Form, HiddenField, TextField, validators
+from wtforms import Form, DateField, FieldList, FormField, HiddenField, TextField, validators
+
+
+class ParticipationForm(Form):
+
+    role = TextField(u'Role', [validators.Length(min=1, max=140)])
+    start_date = DateField(u'Start date')
+    end_date = DateField(u'End date', [validators.Optional()])
 
 
 class ProjectForm(Form):

@@ -6,6 +6,19 @@
         #edit-button {
             float: right;
         }
+
+        body.edit .participant {
+            margin-top: 4ex;
+        }
+
+        #project-form, .participant form.party, .form-actions,
+        body.edit #project, body.edit #project-chart, body.edit .participant .party-info {
+            display: none;
+        }
+        #project, #project-chart, .participant .party-info,
+        body.edit #project-form, body.edit .participant form.party, body.edit .form-actions {
+            display: block;
+        }
     </style>
 {% endblock %}
 
@@ -21,7 +34,7 @@
         {% endif %}
         </a>
 
-        {% if current_user.is_authenticated() %}
+        {% if project_form %}
             <p id="edit-button">
                 <button class="btn btn-success"><i class="icon-edit icon-white"></i> Edit {{ project.name }}</button>
             </p>
@@ -41,9 +54,9 @@
         {% endif %}
     </div>
 
-    {% if current_user.is_authenticated() %}
-        {% from "_form.html" import render_field %}
-        <form id="project-form" class="form-inline hidden" action="{{ url_for('api_project', slug=project._id) }}" method="POST">
+    {% if project_form %}
+        {% from "_form.html" import render_field, render_tiny_field %}
+        <form id="project-form" class="form-inline clearfix" action="{{ url_for('api_project', slug=project._id) }}" method="POST">
             <a href="{{ url_for('project', slug=project._id) }}" class="project-logo big-logo">
             {% if project.avatar_url %}
                 <img src="{{ project.avatar_url }}" width="150" height="150" alt="">
@@ -56,40 +69,11 @@
                 {{ render_field(project_form.html_url) }}
                 {{ render_field(project_form.description) }}
                 {{ render_field(project_form.avatar_url) }}
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                    <button class="btn cancel">Cancel</button>
-                </div>
             </fieldset>
         </form>
-
-        <script type="text/javascript">
-            $(function () {
-                $('#edit-button button').click(function () {
-                    $('#project').hide();
-                    $('#project-form').show().removeClass('hidden');
-                    return false;
-                });
-                $('#project-form button.cancel').click(function () {
-                    $('#project-form').hide();
-                    $('#project').show();
-                    return false;
-                });
-
-                $('#project-form').apiForm({
-                    success: function () {
-                        console.log('SUCCESS');
-                        window.location.reload();
-                    },
-                    error: function () {
-                        console.log('ERR');
-                    }
-                });
-            });
-        </script>
     {% endif %}
 
-    {% for party in project.parties %}
+    {% for party in parties %}
 
         <div class="participant clearfix">
 
@@ -102,7 +86,7 @@
             </a>
 
             <h3><a href="{{ url_for('maker', slug=party.maker._id) }}">{{ party.maker.name }}</a></h3>
-            <p>
+            <p class="party-info">
                 {{ party.role }}<br>
                 {{ party.start_date|date('%B %Y') }}
                 {% if not party.end_month %}
@@ -112,11 +96,61 @@
                     &ndash; {{ party.end_date|date('%B %Y') }}
                 {% endif %}
             </p>
+            {% if party.form %}
+                <form class="party clearfix">
+                    <input type="hidden" name="_id" value="{{ party._id }}">
+                    {{ render_field(party.form.role) }}
+                    {{ render_tiny_field(party.form.start_date) }} &ndash; {{ render_tiny_field(party.form.end_date) }}
+                </form>
+            {% endif %}
 
         </div>
 
     {% endfor %}
 
     {% include "project-chart.html" %}
+
+    {% if project_form %}
+
+        <div id="form-buttons" class="form-actions">
+            <button id="save-button" class="btn btn-primary">Save changes</button>
+            <button id="cancel-button" class="btn cancel">Cancel</button>
+        </div>
+
+        <script type="text/javascript">
+            $(function () {
+                $('#edit-button button').click(function () {
+                    $('body').addClass('edit');
+                    return false;
+                });
+                $('#cancel-button').click(function () {
+                    $('body').removeClass('edit');
+                    return false;
+                });
+
+                $('#save-button').click(function () {
+                    $('#project-form').submit();
+                    return false;
+                });
+                $('#project-form').on('submit', function () {
+                    var data = $('#project-form').apiData();
+                    data['parties'] = $.map($('form.party'), function (elem, i) {
+                        return $(elem).apiData();
+                    });
+                    $('#project-form').apiSubmit({
+                        data: $.toJSON(data),
+                        success: function () {
+                            console.log('SUCCESS');
+                            window.location.reload();
+                        },
+                        error: function () {
+                            console.log('ERR');
+                        }
+                    });
+                    return false;
+                });
+            });
+        </script>
+    {% endif %}
 
 {% endblock %}
