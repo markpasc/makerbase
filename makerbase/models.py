@@ -1,4 +1,5 @@
 import datetime
+from functools import partial
 import json
 from urllib import urlencode
 from urlparse import parse_qs, urlunsplit
@@ -61,6 +62,7 @@ class Robject(object):
             self.id = args[0]
         if kwargs:
             self.__dict__.update(kwargs)
+        self._after_store = list()
 
     @property
     def id(self):
@@ -107,7 +109,12 @@ class Robject(object):
             self._entity = entity
         else:
             entity.set_data(self.get_entity_data())
+
         entity.store()
+
+        after_store, self._after_store = self._after_store, list()
+        for fn in after_store:
+            fn()
 
     def delete(self):
         try:
@@ -133,11 +140,13 @@ class Robject(object):
         try:
             entity = self._entity
         except AttributeError:
-            raise LinkError("Can't add link to %r as it doesn't yet have an entity" % self)
+            self._after_store.append(partial(self.add_link, target, tag=tag))
+            return
         try:
             target_entity = target._entity
         except AttributeError:
-            raise LinkError("Can't add link pointing to %r as it doesn't yet have an entity" % self)
+            target._after_store.append(partial(self.add_link, target, tag=tag))
+            return
         entity.add_link(target_entity, tag=tag)
 
 

@@ -116,8 +116,18 @@ class ProjectAPI(RobjectView):
         for party_data in proj_data['parties']:
             party_id = party_data.get('_id')
             if party_id is None:
-                continue
-            party = Participation.get(party_id)
+                maker_id = party_data.get('maker_id')
+                if maker_id is None:
+                    continue
+                maker = Maker.get(maker_id)
+                party = Participation()
+
+                party.add_link(maker, tag='maker')
+                party.add_link(project, tag='project')
+                maker.add_link(party, tag='participation')
+                proj.add_link(party, tag='participation')
+            else:
+                party = Participation.get(party_id)
 
             form = ParticipationForm(MultiDict(party_data), party)
             if not form.validate():
