@@ -124,16 +124,16 @@ class Robject(object):
         else:
             entity.delete()
 
-    def get_link(self, tag=None):
+    def get_link(self, tag):
         return self.get_links(tag).next()
 
-    def get_links(self, tag=None):
+    def get_links(self, tag):
+        if tag is None:
+            raise ValueError("A tag is required to get links with get_links()")
         try:
             entity = self._entity
         except AttributeError:
             return iter()
-        if tag is None:
-            return iter(entity.get_links())
         return (RobjectMetaclass.class_for_bucket[link.get_bucket()]._new_for_entity(link.get()) for link in entity.get_links() if link.get_tag() == tag)
 
     def add_link(self, target, tag=None):
