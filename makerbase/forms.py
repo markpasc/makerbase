@@ -18,3 +18,8 @@ class ProjectForm(Form):
     description = TextField(u'Description', [validators.Length(max=140)])
     avatar_url = HiddenField(u'Avatar URL', [validators.URL(require_tld=True)],
         description=u'Avatar images should display at 150×150 and 75×75 pixel sizes.')
+
+
+class ProjectAddParticipationForm(ParticipationForm):
+
+    maker = HiddenField(u'Maker ID', [validators.Required()])

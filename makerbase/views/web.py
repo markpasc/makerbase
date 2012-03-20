@@ -10,7 +10,7 @@ import requests
 from werkzeug.datastructures import MultiDict
 
 from makerbase import app
-from makerbase.forms import ProjectForm, ParticipationForm
+from makerbase.forms import ProjectForm, ParticipationForm, ProjectAddParticipationForm
 from makerbase.models import *
 
 
@@ -28,14 +28,14 @@ def project(slug):
 
     parties = list(proj.parties)
 
+    forms = {}
     if current_user.is_authenticated():
-        project_form = ProjectForm(obj=proj)
+        forms['project_form'] = ProjectForm(obj=proj)
         for party in parties:
             party.form = ParticipationForm(obj=party)
-    else:
-        project_form = None
+        forms['add_party_form'] = ProjectAddParticipationForm()
 
-    return render_template('project.html', project=proj, parties=parties, project_form=project_form)
+    return render_template('project.html', project=proj, parties=parties, **forms)
 
 
 @app.route('/maker/<slug>')

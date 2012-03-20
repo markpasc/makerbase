@@ -5,7 +5,7 @@
         {% elif field.type == 'HiddenField' %}
             <input type="hidden" id="{{ field.id }}" name="{{ field.name }}" value="{{ field.data }}">
         {% else %}
-            <input class="input-xxlarge" id="{{ field.id }}" name="{{ field.name }}" value="{{ field.data }}" placeholder="{{ field.label.text }}">
+            <input class="input-xxlarge" id="{{ field.id }}" name="{{ field.name }}" value="{% if field.data is not none %}{{ field.data }}{% endif %}" placeholder="{{ field.label.text }}">
         {% endif %}
         {% if field.type != 'HiddenField' and field.description %}
             <p class="help-block">{{ field.description }}</p>

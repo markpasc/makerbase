@@ -101,6 +101,21 @@ class Robject(object):
     def get_entity_data(self):
         return dict((k, v) for k, v in self.__dict__.iteritems() if not k.startswith('_'))
 
+    def get_api_data(self):
+        data = self.get_entity_data()
+
+        links = self._entity.get_links()
+        for link in links:
+            tag, value = link.get_tag(), link.get_key()
+            if tag not in data:
+                data[tag] = value
+            elif tag in data and not isinstance(data[tag], list):
+                data[tag] = [data[tag], value]
+            else:
+                data[tag].append(value)
+
+        return data
+
     def save(self):
         try:
             entity = self._entity
@@ -164,6 +179,24 @@ class Participation(Robject):
 
     maker = Link('maker')
     project = Link('project')
+
+    def get_api_data(self):
+        data = super(Participation, self).get_api_data()
+        try:
+            del data['start_year']
+            del data['start_month']
+        except KeyError:
+            pass
+        else:
+            data['start'] = self.start_date.isoformat()
+        try:
+            del data['end_year']
+            del data['end_month']
+        except KeyError:
+            pass
+        else:
+            data['end'] = self.end_date.isoformat()
+        return data
 
     @property
     def start_date(self):

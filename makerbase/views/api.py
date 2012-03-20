@@ -8,6 +8,7 @@ from werkzeug.datastructures import MultiDict
 
 from makerbase import app
 from makerbase.forms import ProjectForm, ParticipationForm
+from makerbase.models import Robject
 from makerbase.models import *
 
 
@@ -21,8 +22,17 @@ class RobjectView(MethodView):
                 "errors": [traceback.format_exc().split('\n')],
             }), 500)
 
+    @staticmethod
+    def json_plus_robjects(obj):
+        if isinstance(obj, Robject):
+            return obj.get_api_data()
+        raise TypeError('%r is not a robject' % obj)
+
     def render(self, obj):
-        return json.dumps(obj.get_entity_data())
+        return json.dumps(obj, default=self.json_plus_robjects)
+
+
+class ResourceView(RobjectView):
 
     def get(self, slug):
         obj = self.objclass.get(slug)
@@ -49,19 +59,31 @@ class RobjectView(MethodView):
         return self.render(obj)
 
 
-class ProjectAPI(RobjectView):
+class ProjectAPI(ResourceView):
 
     objclass = Project
     formclass = ProjectForm
 
 
-app.add_url_rule('/api/project/<slug>', view_func=ProjectAPI.as_view('api_project'))
-
-
-class ParticipationAPI(RobjectView):
+class ParticipationAPI(ResourceView):
 
     objclass = Participation
     formclass = ParticipationForm
 
 
+class ProjectPartiesAPI(RobjectView):
+
+    def get(self, slug):
+        proj = Project.get(slug)
+        if proj is None:
+            abort(404)
+        return self.render(list(proj.parties))
+
+    @login_required
+    def post(self, slug):
+        pass
+
+
+app.add_url_rule('/api/project/<slug>', view_func=ProjectAPI.as_view('api_project'))
 app.add_url_rule('/api/participation/<slug>', view_func=ParticipationAPI.as_view('api_participation'))
+app.add_url_rule('/api/project/<slug>/parties', view_func=ProjectPartiesAPI.as_view('api_project_parties'))
