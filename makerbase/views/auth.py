@@ -3,7 +3,7 @@ from urllib import urlencode
 from urlparse import parse_qs, urlsplit, urlunsplit
 
 from flask import redirect, request, url_for
-from flaskext.login import LoginManager, login_user
+from flaskext.login import LoginManager, login_user, logout_user
 import requests
 
 from makerbase import app
@@ -25,6 +25,12 @@ def signin_github():
     }
     redirect_url = 'https://github.com/login/oauth/authorize?%s' % urlencode(params)
     return redirect(redirect_url)
+
+
+@app.route('/signout')
+def signout():
+    logout_user()
+    return redirect(url_for('home'))
 
 
 @app.route('/complete/github')
