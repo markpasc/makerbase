@@ -7,7 +7,7 @@ from flaskext.login import login_required
 from werkzeug.datastructures import MultiDict
 
 from makerbase import app
-from makerbase.forms import ProjectForm, ParticipationForm
+from makerbase.forms import MakerForm, ProjectForm, ParticipationForm, ProjectAddParticipationForm
 from makerbase.models import Robject
 from makerbase.models import *
 
@@ -59,6 +59,12 @@ class ResourceView(RobjectView):
         return self.render(obj)
 
 
+class MakerAPI(ResourceView):
+
+    objclass = Maker
+    formclass = MakerForm
+
+
 class ProjectAPI(ResourceView):
 
     objclass = Project
@@ -81,9 +87,38 @@ class ProjectPartiesAPI(RobjectView):
 
     @login_required
     def post(self, slug):
-        pass
+        proj = Project.get(slug)
+        if proj is None:
+            abort(404)
+
+        data = json.loads(request.data)
+        form = ProjectAddParticipationForm(MultiDict(data))
+        if not form.validate():
+            return Response(json.dumps({
+                'errors': form.errors,
+            }), 400)
+
+        party = Participation()
+        form.populate_obj(party)
+
+        party.add_link(proj, tag='project')
+        proj.add_link(party, tag='participation')
+
+        maker = Maker.get(form.maker.data)
+        if maker is None:
+            return Response(json.dumps({
+                'errors': {
+                    'maker': ['Maker ID is invalid'],
+                }
+            }), 400)
+        party.add_link(maker, tag='maker')
+        maker.add_link(party, tag='participation')
+
+        party.save()
+        return self.render(party)
 
 
+app.add_url_rule('/api/maker/<slug>', view_func=MakerAPI.as_view('api_maker'))
 app.add_url_rule('/api/project/<slug>', view_func=ProjectAPI.as_view('api_project'))
 app.add_url_rule('/api/participation/<slug>', view_func=ParticipationAPI.as_view('api_participation'))
 app.add_url_rule('/api/project/<slug>/parties', view_func=ProjectPartiesAPI.as_view('api_project_parties'))

@@ -31,9 +31,9 @@ def project(slug):
     forms = {}
     if current_user.is_authenticated():
         forms['project_form'] = ProjectForm(obj=proj)
+        forms['add_party_form'] = ProjectAddParticipationForm()
         for party in parties:
             party.form = ParticipationForm(obj=party)
-        forms['add_party_form'] = ProjectAddParticipationForm()
 
     return render_template('project.html', project=proj, parties=parties, **forms)
 

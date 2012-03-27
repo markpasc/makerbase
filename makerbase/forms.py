@@ -3,6 +3,11 @@
 from wtforms import Form, DateField, FieldList, FormField, HiddenField, TextField, validators
 
 
+class MakerForm(Form):
+
+    pass
+
+
 class ParticipationForm(Form):
 
     role = TextField(u'Role', [validators.Length(min=1, max=140)])
@@ -22,4 +27,4 @@ class ProjectForm(Form):
 
 class ProjectAddParticipationForm(ParticipationForm):
 
-    maker = HiddenField(u'Maker ID', [validators.Required()])
+    maker = TextField(u'Maker ID', [validators.Required()])

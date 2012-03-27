@@ -17,6 +17,10 @@
         .display-form .display, .display-form.edit form {
             display: block;
         }
+
+        #add-party-form {
+            margin-top: 4ex;
+        }
     </style>
 {% endblock %}
 
@@ -126,7 +130,7 @@
     </div>
 
     {% if add_party_form %}
-    <div class="display-form clearfix">
+    <div id="add-party-form" class="display-form clearfix">
         <button class="edit-button btn"><i class="icon-plus"></i></button>
         <form class="party clearfix" action="{{ url_for('api_project_parties', slug=project._id) }}" method="POST">
 
@@ -134,7 +138,10 @@
                 <img id="add-party-pic" src="{{ url_for('static', filename='default-maker.png') }}" width="75" height="75" alt="">
             </span>
 
-            {{ render_field(add_party_form.maker) }}
+            <div class="control-group">
+                <input class="input-xxlarge" id="{{ add_party_form.maker.id }}" name="{{ add_party_form.maker.name }}" value="{% if add_party_form.maker.data is not none %}{{ add_party_form.maker.data }}{% endif %}" placeholder="{{ add_party_form.maker.label.text }}">
+                <h3 id="add-party-maker-name">No maker selected</h3>
+            </div>
             {{ render_field(add_party_form.role) }}
             {{ render_tiny_field(add_party_form.start_date) }} &ndash; {{ render_tiny_field(add_party_form.end_date) }}
 
@@ -144,15 +151,52 @@
             </div>
         </form>
     </div>
+
+    <script type="text/javascript">
+        function updateMakerNameSearch() {
+            var name = $('#{{ add_party_form.maker.id }}').val();
+            $.ajax({
+                url: '{{ url_for('api_maker', slug='') }}' + name,
+                dataType: 'json',  // received
+                success: function (data) {
+                    console.log(data);
+                    $('#add-party-pic').attr('src', data.avatar_url);
+                    var $link = $('<a/>');
+                    $link.attr('href', '{{ url_for('maker', slug='') }}' + name);
+                    $link.attr('target', '_new');
+                    $link.text(data.name);
+                    $('#add-party-maker-name').html($link);
+                },
+                error: function (data) {
+                    $('#add-party-pic').attr('src', '{{ url_for('static', filename='default-maker.png') }}');
+                    $('#add-party-maker-name').html('No maker selected');
+                }
+            });
+        }
+
+        $(function () {
+            $('#{{ add_party_form.maker.id }}').keydown(function () {
+                $.doTimeout('add-party-{{ add_party_form.maker.id }}', 500, updateMakerNameSearch);
+            });
+
+            $('#add-party-form form').apiForm({
+                success: function () {
+                    console.log('SUCCESS');
+                    window.location.reload();
+                },
+                error: function () {
+                    console.log('ERR');
+                }
+            })
+        });
+    </script>
     {% endif %}
 
     {% include "project-chart.html" %}
 
     {% if project_form %}
-
         <script type="text/javascript">
             $(function () {
-
                 $('.display-form .edit-button').click(function () {
                     $(this).parents('.display-form').addClass('edit');
                     return false;
