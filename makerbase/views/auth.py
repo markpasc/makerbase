@@ -2,7 +2,7 @@ import json
 from urllib import urlencode
 from urlparse import parse_qs, urlsplit, urlunsplit
 
-from flask import redirect, request, url_for
+from flask import redirect, request, session, url_for
 from flaskext.login import LoginManager, login_user, logout_user
 import requests
 
@@ -17,6 +17,13 @@ login_manager.user_loader(User.get)
 
 @app.route('/signin/github')
 def signin_github():
+    try:
+        next_url = request.args['next']
+    except KeyError:
+        pass
+    else:
+        session['signin_next_url'] = next_url
+
     urlparts = urlsplit(request.base_url)
     params = {
         'client_id': app.config['GITHUB_CLIENT_ID'],
@@ -63,4 +70,10 @@ def complete_github():
 
     login_user(user)
 
-    return redirect(url_for('home'))
+    try:
+        next_url = session['signin_next_url']
+    except KeyError:
+        next_url = url_for('home')
+    else:
+        del session['signin_next_url']
+    return redirect(next_url)

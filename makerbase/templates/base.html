@@ -61,7 +61,7 @@
                 <h1><a href="{{ url_for('home') }}">makerbase</a></h1>
 
                 {% if current_user.is_anonymous() %}
-                    <a id="github-signin-btn" class="btn" href="{{ url_for('signin_github') }}">
+                    <a id="github-signin-btn" class="btn" href="{{ url_for('signin_github') }}?next={{ request.path }}">
                         Sign in with <strong>GitHub</strong>
                     </a>
                 {% else %}
