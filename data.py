@@ -128,3 +128,12 @@ me.save()
 
 mlkshk.add_link(party, tag='participation')
 mlkshk.save()
+
+blit(Maker, 'anildash')
+anildash = Maker(
+    'anildash',
+    name='Anil Dash',
+    html_url='http://dashes.com/anil/about.html',
+    avatar_url='https://si0.twimg.com/profile_images/1364557668/image_reasonably_small.jpg',
+)
+anildash.save()

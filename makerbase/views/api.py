@@ -100,9 +100,8 @@ class ProjectPartiesAPI(RobjectView):
 
         party = Participation()
         form.populate_obj(party)
-
+        del party.maker
         party.add_link(proj, tag='project')
-        proj.add_link(party, tag='participation')
 
         maker = Maker.get(form.maker.data)
         if maker is None:
@@ -112,9 +111,12 @@ class ProjectPartiesAPI(RobjectView):
                 }
             }), 400)
         party.add_link(maker, tag='maker')
-        maker.add_link(party, tag='participation')
-
         party.save()
+
+        maker.add_link(party, tag='participation')
+        maker.save()
+        proj.add_link(party, tag='participation')
+        proj.save()
         return self.render(party)
 
 

@@ -62,6 +62,7 @@ class Robject(object):
             self.id = args[0]
         if kwargs:
             self.__dict__.update(kwargs)
+        self._before_store = list()
         self._after_store = list()
 
     @property
@@ -125,10 +126,16 @@ class Robject(object):
         else:
             entity.set_data(self.get_entity_data())
 
+        before_store, self._before_store = self._before_store, list()
+        for fn in before_store:
+            app.logger.debug("~YAY~ doing a thing saved for before %r saves", self)
+            fn()
+
         entity.store()
 
         after_store, self._after_store = self._after_store, list()
         for fn in after_store:
+            app.logger.debug("~YAY~ doing a thing saved for after %r saves", self)
             fn()
 
     def delete(self):
@@ -159,11 +166,13 @@ class Robject(object):
         try:
             entity = self._entity
         except AttributeError:
-            self._after_store.append(partial(self.add_link, target, tag=tag))
+            app.logger.debug("Oops, remembering link from %r to %r with tag %r to save later when source %r is saved", self, target, tag, self)
+            self._before_store.append(partial(self.add_link, target, tag=tag))
             return
         try:
             target_entity = target._entity
         except AttributeError:
+            app.logger.debug("Oops, remembering link from %r to %r with tag %r to save later when target %r is saved", self, target, tag, target)
             target._after_store.append(partial(self.add_link, target, tag=tag))
             return
         entity.add_link(target_entity, tag=tag)
