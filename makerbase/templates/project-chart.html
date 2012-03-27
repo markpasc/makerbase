@@ -39,6 +39,9 @@
                 return stringparts[0] + ' ' + stringparts[2];
             });
 
+        // Move the last edge to mean the last-plus-one month, so months are blocks.
+        bounds[1] += 1;
+
         var monthPx = d3.scale.linear()
             .domain(bounds)
             .range([0, $('#chart-bars').innerWidth()]);
@@ -50,7 +53,7 @@
             .attr('class', 'month')
             .text(function (d) { return d.name })
             .style('left', function (d) { return monthPx(d.start) + 'px' })
-            .style('width', function (d) { return (monthPx(d.end) - monthPx(d.start)) + 'px' });
+            .style('width', function (d) { return (monthPx(d.end + 1) - monthPx(d.start)) + 'px' });
         chart.exit().remove();
     });
 </script>
