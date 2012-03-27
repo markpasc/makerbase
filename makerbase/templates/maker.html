@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block pagetitle %}{{ project.name }} on {{ super() }}{% endblock %}
+
 {% block content %}
 
     <div class="maker clearfix">
