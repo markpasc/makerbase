@@ -140,7 +140,11 @@ class Robject(object):
             entity.delete()
 
     def get_link(self, tag):
-        return self.get_links(tag).next()
+        link_iter = self.get_links(tag)
+        try:
+            return link_iter.next()
+        except StopIteration:
+            return
 
     def get_links(self, tag):
         if tag is None:
