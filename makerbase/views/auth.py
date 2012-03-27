@@ -1,6 +1,6 @@
 import json
 from urllib import urlencode
-from urlparse import parse_qs, urlunsplit
+from urlparse import parse_qs, urlsplit, urlunsplit
 
 from flask import redirect, request, url_for
 from flaskext.login import LoginManager, login_user
@@ -17,12 +17,14 @@ login_manager.user_loader(User.get)
 
 @app.route('/signin/github')
 def signin_github():
+    urlparts = urlsplit(request.base_url)
     params = {
         'client_id': app.config['GITHUB_CLIENT_ID'],
-        'redirect_url': urlunsplit(('http', 'localhost:5000', url_for('complete_github'), None, None)),
+        'redirect_url': urlunsplit((urlparts.scheme, urlparts.netloc, url_for('complete_github'), None, None)),
         'scope': '',
     }
-    return redirect('https://github.com/login/oauth/authorize?%s' % urlencode(params))
+    redirect_url = 'https://github.com/login/oauth/authorize?%s' % urlencode(params)
+    return redirect(redirect_url)
 
 
 @app.route('/complete/github')
