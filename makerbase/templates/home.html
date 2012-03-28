@@ -1,11 +1,38 @@
 {% extends "base.html" %}
 
+{% block htmlhead %}
+    {{ super() }}
+    <style type="text/css">
+        #about p {
+            margin: 0 0 4ex 0;
+            font-size: 1.2em;
+            line-height: 1.5em;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 
-    {% if current_user.is_anonymous() %}
-        <p>Hello, anonymoose!</p>
-    {% else %}
-        <p>Hello, {{ current_user.name }}!</p>
-    {% endif %}
+    <div id="about">
+        <p>Makerbase is a directory of people who make bits and atoms and the things they made.</p>
+    </div>
+
+    <h2>Projects</h2>
+
+    <div id="projects">
+    {% for project in projects %}
+        <div class="project clearfix">
+            <a href="{{ url_for('project', slug=project._id) }}" class="project-logo">
+            {% if project.avatar_url %}
+                <img src="{{ project.avatar_url }}" width="75" height="75" alt="">
+            {% else %}
+                <img src="{{ url_for('static', filename='default-project.png') }}" width="75" height="75" alt="">
+            {% endif %}
+            </a>
+
+            <h3><a href="{{ url_for('project', slug=project._id) }}">{{ project.name }}</a></h3>
+        </div>
+    {% endfor %}
+    </div>
 
 {% endblock %}

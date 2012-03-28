@@ -14,6 +14,7 @@ riakclient = riak.RiakClient(port=8087, transport_class=riak.RiakPbcTransport)
 
 
 class LinkError(Exception):
+
     pass
 
 
@@ -64,6 +65,10 @@ class Robject(object):
             self.__dict__.update(kwargs)
         self._before_store = list()
         self._after_store = list()
+
+    @classmethod
+    def get_bucket(cls):
+        return riakclient.bucket(cls._bucket)
 
     @property
     def id(self):

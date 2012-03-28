@@ -65,7 +65,10 @@
                         Sign in with <strong>GitHub</strong>
                     </a>
                 {% else %}
-                    NO BUTTON
+                    <span>Hello, {{ current_user.name }}!</span>
+                    <a id="github-signout-btn" class="btn" href="{{ url_for('signout') }}?next={{ request.path }}">
+                        Sign out
+                    </a>
                 {% endif %}
             </div>
 

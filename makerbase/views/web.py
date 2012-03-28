@@ -16,7 +16,10 @@ from makerbase.models import *
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    # TODO: LOOOOOL don't get all the keys in the bucket.
+    project_keys = Project.get_bucket().get_keys()
+    projects = (Project.get(key) for key in project_keys)
+    return render_template('home.html', projects=projects)
 
 
 @app.route('/project/<slug>')
