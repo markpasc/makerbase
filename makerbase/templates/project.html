@@ -56,9 +56,9 @@
             <form id="project-form" class="form-inline clearfix" action="{{ url_for('api_project', slug=project._id) }}" method="POST">
                 <a href="{{ url_for('project', slug=project._id) }}" class="project-logo big-logo">
                 {% if project.avatar_url %}
-                    <img src="{{ project.avatar_url }}" width="150" height="150" alt="">
+                    <img id="avatar-image" src="{{ project.avatar_url }}" width="150" height="150" alt="">
                 {% else %}
-                    <img src="{{ url_for('static', filename='default-project.png') }}" width="150" height="150" alt="">
+                    <img id="avatar-image" src="{{ url_for('static', filename='default-project.png') }}" width="150" height="150" alt="">
                 {% endif %}
                 </a>
                 <fieldset>
@@ -126,7 +126,7 @@
 
     {% if add_party_form %}
     <div id="add-party-form" class="display-form clearfix">
-        <button class="edit-button btn"><i class="icon-plus"></i></button>
+        <button class="edit-button btn"><i class="icon-plus"></i> Add participant</button>
         <form class="party clearfix" action="{{ url_for('api_project_parties', slug=project._id) }}" method="POST">
 
             <span class="maker-logo">
@@ -190,19 +190,28 @@
     {% include "project-chart.html" %}
 
     {% if project_form %}
-        <script type="text/javascript">
-            $(function () {
-                $('#project-form').add('#participants form.party').apiForm({
-                    success: function () {
-                        console.log('SUCCESS');
-                        window.location.reload();
-                    },
-                    error: function () {
-                        console.log('ERR');
-                    }
-                });
+    <script type="text/javascript">
+        function updateAvatarImage() {
+            var $avatarUrl = $('#{{ project_form.avatar_url.id }}');
+            $('#avatar-image').attr('src', $avatarUrl.val());
+        }
+
+        $(function () {
+            $('#{{ project_form.avatar_url.id }}').keydown(function () {
+                $.doTimeout('project-{{ project_form.avatar_url.id }}', 500, updateAvatarImage);
             });
-        </script>
+
+            $('#project-form').add('#participants form.party').apiForm({
+                success: function () {
+                    console.log('SUCCESS');
+                    window.location.reload();
+                },
+                error: function () {
+                    console.log('ERR');
+                }
+            });
+        });
+    </script>
     {% endif %}
 
 {% endblock %}

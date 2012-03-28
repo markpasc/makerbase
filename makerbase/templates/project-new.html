@@ -36,7 +36,16 @@
 
     {% if project_form %}
     <script type="text/javascript">
+        function updateAvatarImage() {
+            var $avatarUrl = $('#{{ maker_form.avatar_url.id }}');
+            $('#avatar-image').attr('src', $avatarUrl.val());
+        }
+
         $(function () {
+            $('#{{ project_form.avatar_url.id }}').keydown(function () {
+                $.doTimeout('project-{{ project_form.avatar_url.id }}', 500, updateAvatarImage);
+            });
+
             $('#project-form').apiForm({
                 success: function () {
                     console.log('SUCCESS');
