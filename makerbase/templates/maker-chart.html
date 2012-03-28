@@ -30,13 +30,14 @@
             d3.max($.map(months, function (val) { return val.end }))
         ];
 
+        var monthNames = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
         d3.select('#project-chart').selectAll('.bounds')
             .data(bounds)
             .text(function (d) {
                 var date = new Date(Math.floor(d / 12), d % 12, 1);
-                // TODO: handle more locales than just english
-                var stringparts = date.toLocaleString().split(' ');
-                return stringparts[0] + ' ' + stringparts[2];
+                var month = date.getUTCMonth();
+                var year = date.getUTCFullYear();
+                return '' + monthNames[month] + ' ' + year;
             });
 
         bounds[1] += 1;
