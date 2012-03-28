@@ -98,6 +98,24 @@
         <script type="text/javascript" src="{{ url_for('static', filename='d3.v2.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-alert.js') }}"></script>
 
+        <script type="text/javascript">
+        $(function () {
+            $('.display-form .edit-button').click(function () {
+                $(this).parents('.display-form').addClass('edit');
+                return false;
+            });
+            $('.display-form .btn.cancel').click(function () {
+                var $df = $(this).parents('.display-form');
+                $df.removeClass('edit');
+                var $form = $df.find('form');
+                if ($form.size()) {
+                    $form.get(0).reset();
+                }
+                return false;
+            });
+        });
+        </script>
+
         <!--
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-transition.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-modal.js') }}"></script>

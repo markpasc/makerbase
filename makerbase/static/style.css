@@ -89,3 +89,10 @@ h2 {
     padding: 1ex 0;
     margin-bottom: 1ex;
 }
+
+.display-form form, .display-form.edit .display, .display-form.edit .edit-button {
+    display: none;
+}
+.display-form .display, .display-form.edit form {
+    display: block;
+}

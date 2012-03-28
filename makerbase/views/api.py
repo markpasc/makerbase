@@ -58,6 +58,23 @@ class ResourceView(RobjectView):
 
         return self.render(obj)
 
+    @login_required
+    def put(self, slug):
+        data = json.loads(request.data)
+        form = self.formclass(MultiDict(data))
+        if not form.validate():
+            return Response(json.dumps({
+                'errors': form.errors,
+            }), 400)
+
+        obj = self.objclass.get(slug)
+        if obj is None:
+            obj = self.objclass(slug)
+        form.populate_obj(obj)
+        obj.save()
+
+        return self.render(obj)
+
 
 class MakerAPI(ResourceView):
 
@@ -122,5 +139,5 @@ class ProjectPartiesAPI(RobjectView):
 
 app.add_url_rule('/api/maker/<slug>', view_func=MakerAPI.as_view('api_maker'))
 app.add_url_rule('/api/project/<slug>', view_func=ProjectAPI.as_view('api_project'))
-app.add_url_rule('/api/participation/<slug>', view_func=ParticipationAPI.as_view('api_participation'))
 app.add_url_rule('/api/project/<slug>/parties', view_func=ProjectPartiesAPI.as_view('api_project_parties'))
+app.add_url_rule('/api/participation/<slug>', view_func=ParticipationAPI.as_view('api_participation'))

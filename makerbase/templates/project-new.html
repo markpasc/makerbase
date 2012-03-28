@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}No such project &ndash; {{ super() }}{% endblock %}
+
+{% block content %}
+
+    <div id="project" class="project display-form clearfix">
+        <div class="display">
+            <h2>Not found</h2>
+
+            <p>We don't seem to have a project by the name &ldquo;{{ slug }}&rdquo; yet.</p>
+
+            {% if project_form %}
+                <button class="btn edit-button"><i class="icon-plus"></i> Create &ldquo;{{ slug }}&rdquo;</button>
+            {% endif %}
+        </div>
+
+        {% if project_form %}
+            {% from "_form.html" import render_field, render_tiny_field %}
+            <form id="project-form" class="form-inline clearfix" action="{{ url_for('api_project', slug=slug) }}" method="PUT">
+                <span class="project-logo big-logo"><img src="{{ url_for('static', filename='default-project.png') }}" width="150" height="150" alt=""></span>
+                <fieldset>
+                    {{ render_field(project_form.name) }}
+                    {{ render_field(project_form.html_url) }}
+                    {{ render_field(project_form.description) }}
+                    {{ render_field(project_form.avatar_url) }}
+                </fieldset>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary">Create project</button>
+                    <button class="btn cancel">Cancel</button>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+
+    {% if project_form %}
+    <script type="text/javascript">
+        $(function () {
+            $('#project-form').apiForm({
+                success: function () {
+                    console.log('SUCCESS');
+                    window.location.reload();
+                },
+                error: function () {
+                    console.log('ERROR');
+                }
+            });
+        });
+    </script>
+    {% endif %}
+
+{% endblock %}

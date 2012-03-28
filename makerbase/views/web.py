@@ -3,7 +3,7 @@ import traceback
 from urllib import urlencode
 from urlparse import parse_qs, urlsplit, urlunsplit
 
-from flask import abort, flash, redirect, render_template, request, Response, url_for
+from flask import abort, flash, make_response, redirect, render_template, request, Response, url_for
 from flask.views import MethodView
 from flaskext.login import LoginManager, current_user, login_user, login_required
 import requests
@@ -21,14 +21,17 @@ def home():
 
 @app.route('/project/<slug>')
 def project(slug):
+    forms = {}
+
     proj = Project.get(slug)
     if proj is None:
-        # TODO: don't 404, but rather offer to create the project?
-        abort(404)
+        if current_user.is_authenticated():
+            forms['project_form'] = ProjectForm()
+        html = render_template('project-new.html', slug=slug, **forms)
+        return make_response(html, 404)
 
     parties = list(proj.parties)
 
-    forms = {}
     if current_user.is_authenticated():
         forms['project_form'] = ProjectForm(obj=proj)
         forms['add_party_form'] = ProjectAddParticipationForm()
