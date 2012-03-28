@@ -37,7 +37,7 @@
     {% if project_form %}
     <script type="text/javascript">
         function updateAvatarImage() {
-            var $avatarUrl = $('#{{ maker_form.avatar_url.id }}');
+            var $avatarUrl = $('#{{ project_form.avatar_url.id }}');
             $('#avatar-image').attr('src', $avatarUrl.val());
         }
 
