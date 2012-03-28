@@ -1,0 +1,58 @@
+<div id="project-chart">
+    <div class="clearfix">
+        <h3 id="first-month" class="bounds"></h3>
+        <h3 id="last-month" class="bounds"></h3>
+    </div>
+    <div id="chart-bars"></div>
+</div>
+
+<script type="text/javascript">
+    var now = new Date();
+    var nowMonth = now.getFullYear() * 12 + now.getMonth();
+
+    var months = [
+        {% for party in maker.parties %}
+            {
+                name: '{{ party.project.name }}',
+                start: {{ party.start_year }} * 12 + {{ party.start_month }},
+                {% if party.end_year %}
+                end: {{ party.end_year }} * 12 + {{ party.end_month }}
+                {% else %}
+                end: nowMonth
+                {% endif %}
+            }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    $(function () {
+        var bounds = [
+            d3.min($.map(months, function (val) { return val.start })),
+            d3.max($.map(months, function (val) { return val.end }))
+        ];
+
+        d3.select('#project-chart').selectAll('.bounds')
+            .data(bounds)
+            .text(function (d) {
+                var date = new Date(Math.floor(d / 12), d % 12, 1);
+                // TODO: handle more locales than just english
+                var stringparts = date.toLocaleString().split(' ');
+                return stringparts[0] + ' ' + stringparts[2];
+            });
+
+        bounds[1] += 1;
+
+        var monthPx = d3.scale.linear()
+            .domain(bounds)
+            .range([0, $('#chart-bars').innerWidth()]);
+
+        var chart = d3.select('#chart-bars').selectAll('div')
+            .data(months);
+        chart.enter().append('div');
+        chart
+            .attr('class', 'month')
+            .text(function (d) { return d.name })
+            .style('left', function (d) { return monthPx(d.start) + 'px' })
+            .style('width', function (d) { return (monthPx(d.end + 1) - monthPx(d.start)) + 'px' });
+        chart.exit().remove();
+    });
+</script>

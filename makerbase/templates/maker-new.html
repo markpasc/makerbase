@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}No such maker &ndash; {{ super() }}{% endblock %}
+
+{% block content %}
+
+    <div id="maker" class="maker display-form clearfix">
+        <div class="display">
+            <h2>Not found</h2>
+
+            <p>We don't seem to have a maker by the name &ldquo;{{ slug }}&rdquo; yet.</p>
+
+            {% if maker_form %}
+                <button class="btn edit-button"><i class="icon-plus"></i> Create &ldquo;{{ slug }}&rdquo;</button>
+            {% endif %}
+        </div>
+
+        {% if maker_form %}
+            {% from "_form.html" import render_field, render_tiny_field %}
+            <form id="maker-form" class="form-inline clearfix" action="{{ url_for('api_maker', slug=slug) }}" method="PUT">
+                <span class="maker-logo big-logo"><img id="avatar-image" src="{{ url_for('static', filename='default-maker.png') }}" width="150" height="150" alt=""></span>
+                <fieldset>
+                    {{ render_field(maker_form.name) }}
+                    {{ render_field(maker_form.avatar_url) }}
+                    {{ render_field(maker_form.html_url) }}
+                </fieldset>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary">Create maker</button>
+                    <button class="btn cancel">Cancel</button>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+
+    {% if maker_form %}
+    <script type="text/javascript">
+        function updateAvatarImage() {
+            var $avatarUrl = $('#{{ maker_form.avatar_url.id }}');
+            $('#avatar-image').attr('src', $avatarUrl.val());
+        }
+
+        $(function () {
+            $('#{{ maker_form.avatar_url.id }}').keydown(function () {
+                $.doTimeout('maker-{{ maker_form.avatar_url.id }}', 500, updateAvatarImage);
+            });
+
+            $('#maker-form').apiForm({
+                success: function () {
+                    console.log('SUCCESS');
+                    window.location.reload();
+                },
+                error: function () {
+                    console.log('ERROR');
+                }
+            });
+        });
+    </script>
+    {% endif %}
+
+{% endblock %}

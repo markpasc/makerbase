@@ -1,36 +1,99 @@
 {% extends "base.html" %}
 
-{% block pagetitle %}{{ project.name }} on {{ super() }}{% endblock %}
+{% block pagetitle %}{{ maker.name }} on {{ super() }}{% endblock %}
+
+{% block htmlhead %}
+    {{ super() }}
+    <style type="text/css">
+        .edit-button {
+            float: right;
+        }
+
+        body.edit .participant {
+            margin-top: 4ex;
+        }
+
+        #add-party-form {
+            margin-top: 4ex;
+        }
+    </style>
+{% endblock %}
 
 {% block content %}
 
-    <div class="maker clearfix">
+    <div class="maker display-form clearfix">
 
-        <a href="{{ url_for('maker', slug=maker._id) }}" class="maker-logo big-logo">
-        {% if maker.avatar_url %}
-            <img src="{{ maker.avatar_url }}" width="150" height="150" alt="">
-        {% else %}
-            <img src="{{ url_for('static', filename='default-maker.png') }}" width="150" height="150" alt="">
-        {% endif %}
-        </a>
+        <div class="maker-body display">
 
-        <h2><a href="{{ url_for('maker', slug=maker._id) }}">{{ maker.name }}</a></h2>
+            <a href="{{ url_for('maker', slug=maker._id) }}" class="maker-logo big-logo">
+            {% if maker.avatar_url %}
+                <img src="{{ maker.avatar_url }}" width="150" height="150" alt="">
+            {% else %}
+                <img src="{{ url_for('static', filename='default-maker.png') }}" width="150" height="150" alt="">
+            {% endif %}
+            </a>
 
-        {% if maker.html_url %}
-            <p>
-                <a href="{{ maker.html_url }}" rel="nofollow">{{ maker.html_url|pretty_url }}</a>
-                <a class="icon-share-alt" href="{{ maker.html_url }}" rel="nofollow"></a>
-            </p>
-        {% endif %}
+            {% if maker_form %}
+                <button class="edit-button btn"><i class="icon-edit"></i></button>
+            {% endif %}
 
-        {% if maker.description %}
-            <p>{{ maker.description }}</p>
+            <h2><a href="{{ url_for('maker', slug=maker._id) }}">{{ maker.name }}</a></h2>
+
+            {% if maker.html_url %}
+                <p>
+                    <a href="{{ maker.html_url }}" rel="nofollow">{{ maker.html_url|pretty_url }}</a>
+                    <a class="icon-share-alt" href="{{ maker.html_url }}" rel="nofollow"></a>
+                </p>
+            {% endif %}
+
+            {% if maker.description %}
+                <p>{{ maker.description }}</p>
+            {% endif %}
+
+        </div>
+
+        {% if maker_form %}
+            {% from "_form.html" import render_field, render_tiny_field %}
+            <form id="maker-form" class="form-inline clearfix" action="{{ url_for('api_maker', slug=maker._id) }}" method="POST">
+                <a href="{{ url_for('maker', slug=maker._id) }}" class="maker-logo big-logo">
+                {% if maker.avatar_url %}
+                    <img src="{{ maker.avatar_url }}" width="150" height="150" alt="">
+                {% else %}
+                    <img src="{{ url_for('static', filename='default-maker.png') }}" width="150" height="150" alt="">
+                {% endif %}
+                </a>
+                <fieldset>
+                    {{ render_field(maker_form.name) }}
+                    {{ render_field(maker_form.avatar_url) }}
+                    {{ render_field(maker_form.html_url) }}
+                </fieldset>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary">Save changes</button>
+                    <button class="btn cancel">Cancel</button>
+                </div>
+            </form>
         {% endif %}
 
     </div>
 
-    {% for party in maker.parties %}
+    {% if maker_form %}
+    <script type="text/javascript">
+        $(function () {
+            $('#maker-form').apiForm({
+                success: function () {
+                    console.log('SUCCESS');
+                    window.location.reload();
+                },
+                error: function () {
+                    console.log('ERROR');
+                }
+            });
+        });
+    </script>
+    {% endif %}
 
+    {% for party in maker.parties %}
         <div class="participant clearfix">
 
             <a href="{{ url_for('project', slug=party.project._id) }}" class="project-logo">
@@ -55,65 +118,8 @@
             </p>
 
         </div>
-
     {% endfor %}
 
-
-    <div id="project-chart">
-        <div class="clearfix">
-            <h3 id="first-month" class="bounds"></h3>
-            <h3 id="last-month" class="bounds"></h3>
-        </div>
-        <div id="chart-bars"></div>
-    </div>
-
-    <script type="text/javascript">
-        var now = new Date();
-        var nowMonth = now.getFullYear() * 12 + now.getMonth();
-
-        var months = [
-            {% for party in maker.parties %}
-                {
-                    name: '{{ party.project.name }}',
-                    start: {{ party.start_year }} * 12 + {{ party.start_month }},
-                    {% if party.end_year %}
-                    end: {{ party.end_year }} * 12 + {{ party.end_month }}
-                    {% else %}
-                    end: nowMonth
-                    {% endif %}
-                }{% if not loop.last %},{% endif %}
-            {% endfor %}
-        ];
-
-        $(function () {
-            var bounds = [
-                d3.min($.map(months, function (val) { return val.start })),
-                d3.max($.map(months, function (val) { return val.end }))
-            ];
-
-            d3.select('#project-chart').selectAll('.bounds')
-                .data(bounds)
-                .text(function (d) {
-                    var date = new Date(Math.floor(d / 12), d % 12, 1);
-                    // TODO: handle more locales than just english
-                    var stringparts = date.toLocaleString().split(' ');
-                    return stringparts[0] + ' ' + stringparts[2];
-                });
-
-            var monthPx = d3.scale.linear()
-                .domain(bounds)
-                .range([0, $('#chart-bars').innerWidth()]);
-
-            var chart = d3.select('#chart-bars').selectAll('div')
-                .data(months);
-            chart.enter().append('div');
-            chart
-                .attr('class', 'month')
-                .text(function (d) { return d.name })
-                .style('left', function (d) { return monthPx(d.start) + 'px' })
-                .style('width', function (d) { return (monthPx(d.end) - monthPx(d.start)) + 'px' });
-            chart.exit().remove();
-        });
-    </script>
+    {% include "maker-chart.html" %}
 
 {% endblock %}

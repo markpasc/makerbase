@@ -10,7 +10,7 @@ import requests
 from werkzeug.datastructures import MultiDict
 
 from makerbase import app
-from makerbase.forms import ProjectForm, ParticipationForm, ProjectAddParticipationForm
+from makerbase.forms import MakerForm, ProjectForm, ParticipationForm, ProjectAddParticipationForm
 from makerbase.models import *
 
 
@@ -43,12 +43,21 @@ def project(slug):
 
 @app.route('/maker/<slug>')
 def maker(slug):
+    forms = {}
+
     maker = Maker.get(slug)
     if maker is None:
-        # TODO: don't 404, but offer to create a page for this maker?
-        abort(404)
+        if current_user.is_authenticated():
+            forms['maker_form'] = MakerForm()
+        html = render_template('maker-new.html', slug=slug, **forms)
+        return make_response(html, 404)
 
-    return render_template('maker.html', maker=maker)
+    parties = list(maker.parties)
+
+    if current_user.is_authenticated():
+        forms['maker_form'] = MakerForm(obj=maker)
+
+    return render_template('maker.html', maker=maker, parties=parties, **forms)
 
 
 @app.errorhandler(404)
