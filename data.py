@@ -42,7 +42,16 @@ def blit(cls, ident):
         obj.delete()
 
 
-blit(Project, 'mlkshk')
+def empty_bucket(cls):
+    keys = cls.get_bucket().get_keys()
+    for key in keys:
+        blit(cls, key)
+
+
+for cls in (Project, Maker, Participation):
+    empty_bucket(cls)
+
+
 mlkshk = Project(
     'mlkshk',
     name='MLKSHK',
@@ -52,7 +61,6 @@ mlkshk = Project(
 )
 mlkshk.save()
 
-blit(Maker, 'markpasc')
 me = Maker(
     'markpasc',
     name='Mark Paschal',
@@ -61,7 +69,6 @@ me = Maker(
 )
 me.save()
 
-blit(Maker, 'torrez')
 andre = Maker(
     'torrez',
     name='Andre Torrez',
@@ -70,7 +77,6 @@ andre = Maker(
 )
 andre.save()
 
-blit(Maker, 'amberdawn')
 amber = Maker(
     'amber',
     name='Amber Costley',
@@ -129,7 +135,6 @@ me.save()
 mlkshk.add_link(party, tag='participation')
 mlkshk.save()
 
-blit(Maker, 'anildash')
 anildash = Maker(
     'anildash',
     name='Anil Dash',
