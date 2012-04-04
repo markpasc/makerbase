@@ -52,7 +52,7 @@
         </div>
 
         {% if project_form %}
-            {% from "_form.html" import render_field, render_tiny_field %}
+            {% from "_form.html" import render_field, render_tiny_field, render_field_help %}
             <form id="project-form" class="form-inline clearfix" action="{{ url_for('api_project', slug=project._id) }}" method="POST">
                 <a href="{{ url_for('project', slug=project._id) }}" class="project-logo big-logo">
                 {% if project.avatar_url %}
@@ -111,6 +111,7 @@
                 <form class="party clearfix" action="{{ url_for('api_participation', slug=party._id) }}" method="POST">
                     {{ render_field(party.form.role) }}
                     {{ render_tiny_field(party.form.start_date) }} &ndash; {{ render_tiny_field(party.form.end_date) }}
+                    {{ render_field_help(party.form.end_date) }}
 
                     <div class="form-actions">
                         <button class="btn btn-primary">Save changes</button>

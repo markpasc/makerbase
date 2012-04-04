@@ -1,3 +1,8 @@
+{% macro render_field_help(field) %}
+    {% if field.type != 'HiddenField' and field.description %}
+        <p class="help-block">{{ field.description }}</p>
+    {% endif %}
+{% endmacro %}
 {% macro render_field(field) %}
     <div class="control-group">
         {% if field.type == 'BooleanField' %}
@@ -7,9 +12,7 @@
         {% else %}
             <input class="input-xxlarge" id="{{ field.id }}" name="{{ field.name }}" value="{% if field.data is not none %}{{ field.data }}{% endif %}" placeholder="{{ field.label.text }}">
         {% endif %}
-        {% if field.type != 'HiddenField' and field.description %}
-            <p class="help-block">{{ field.description }}</p>
-        {% endif %}
+        {{ render_field_help(field) }}
     </div>
 {% endmacro %}
 {% macro render_tiny_field(field) %}

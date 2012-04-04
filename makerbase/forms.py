@@ -46,7 +46,8 @@ class ParticipationForm(Form):
 
     role = TextField(u'Role', [validators.Length(min=1, max=140)])
     start_date = MonthField(u'Start month')
-    end_date = MonthField(u'End month', [validators.Optional()])
+    end_date = MonthField(u'End month', [validators.Optional()],
+        description=u'Enter months like “2012-01”. Leave the end month blank for current ongoing projects.')
 
 
 class ProjectForm(Form):
