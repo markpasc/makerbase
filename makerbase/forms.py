@@ -1,6 +1,36 @@
 # coding=utf-8
 
-from wtforms import Form, DateField, FieldList, FormField, HiddenField, TextField, validators
+from datetime import datetime
+from itertools import chain
+
+from wtforms import Form, DateTimeField, FieldList, FormField, HiddenField, TextField, validators
+
+
+class MonthField(DateTimeField):
+
+    def __init__(self, label=None, validators=None, format='%Y-%m', **kwargs):
+        super(MonthField, self).__init__(label, validators, format, **kwargs)
+
+    def process_formdata(self, valueslist):
+        if not valueslist:
+            return
+        date_str = u' '.join(valueslist).strip().lower()
+
+        dt = None
+        formats = (self.format, '%Y/%m', '%m-%Y', '%m/%Y', '%b %Y', '%Y %b', '%B %Y', '%Y %B')
+        formats = chain(formats, (format.replace('%Y', '%y') for format in formats))
+        for format in formats:
+            try:
+                dt = datetime.strptime(date_str, format)
+            except ValueError:
+                pass
+            else:
+                break
+
+        if dt is None:
+            self.data = None
+            raise ValueError("value %r not in month format" % date_str)
+        self.data = dt.date()
 
 
 class MakerForm(Form):
@@ -15,8 +45,8 @@ class MakerForm(Form):
 class ParticipationForm(Form):
 
     role = TextField(u'Role', [validators.Length(min=1, max=140)])
-    start_date = DateField(u'Start date')
-    end_date = DateField(u'End date', [validators.Optional()])
+    start_date = MonthField(u'Start month')
+    end_date = MonthField(u'End month', [validators.Optional()])
 
 
 class ProjectForm(Form):

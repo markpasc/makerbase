@@ -15,8 +15,8 @@
 {% macro render_tiny_field(field) %}
     {% if field.type == 'BooleanField' %}
         <label><input type="checkbox" id="{{ field.id }}" name="{{ field.name }}" {% if field.data %}checked="checked"{% endif %} value="1"> {{ field.label.text }}</label>
-    {% elif field.type == 'DateField' %}
-        <input class="input-small date" id="{{ field.id }}" name="{{ field.name }}" value="{% if field.data is not none %}{{ field.data }}{% endif %}" placeholder="{{ field.label.text }}">
+    {% elif field.type == 'MonthField' %}
+        <input class="input-small date month" id="{{ field.id }}" name="{{ field.name }}" value="{% if field.data is not none %}{{ field.data|date("%Y-%m") }}{% endif %}" placeholder="{{ field.label.text }}">
     {% elif field.type == 'HiddenField' %}
         <input type="hidden" id="{{ field.id }}" name="{{ field.name }}" value="{% if field.data is not none %}{{ field.data }}{% endif %}">
     {% else %}
