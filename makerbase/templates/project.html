@@ -202,14 +202,37 @@
                 $.doTimeout('project-{{ project_form.avatar_url.id }}', 500, updateAvatarImage);
             });
 
-            $('#project-form').add('#participants form.party').apiForm({
-                success: function () {
-                    console.log('SUCCESS');
-                    window.location.reload();
-                },
-                error: function () {
-                    console.log('ERR');
-                }
+            $('#project-form').add('#participants form.party').each(function (val) {
+                var $form = $(this);
+                $form.apiForm({
+                    submit: function ($form) {
+                        $form.find('.control-group').removeClass('error');
+                        $form.find('.inline-error').hide();
+                    },
+                    success: function (data) {
+                        console.log('SUCCESS');
+                        window.location.reload();
+                    },
+                    error: function (jqxhr, textStatus, errorThrown) {
+                        console.log('ERR');
+                        var data = $.parseJSON(jqxhr.responseText);
+                        $.each(data.errors, function (key, val) {
+                            console.log(key, ":", val.join('. '));
+
+                            var $input = $form.find('input[name="' + key + '"]');
+                            var $group = $input.parents('.control-group');
+                            $group.addClass('error');
+
+                            var $message = $group.find('.help-inline');
+                            if (!$message.size()) {
+                                $message = $('<span/>').addClass('help-inline').addClass('inline-error');
+                                $message.appendTo($group);
+                            }
+                            $message.text(val.join('. '));
+                            $message.show();
+                        });
+                    }
+                });
             });
         });
     </script>

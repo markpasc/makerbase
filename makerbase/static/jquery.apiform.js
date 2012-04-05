@@ -27,17 +27,16 @@
             settings['data'] = $.toJSON($form.apiData());
         }
 
-        $.ajax(settings);
+        if (settings.hasOwnProperty('submit')) {
+            settings['submit']($form);
+        }
+
+        return $.ajax(settings);
     };
 
     $.fn.apiForm = function (options) {
         return this.on('submit', function () {
-            try {
-                $(this).apiSubmit(options);
-            }
-            catch (e) {
-                console.log(e);
-            };
+            $(this).apiSubmit(options);
             return false;
         });
     };
