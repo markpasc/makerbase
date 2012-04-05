@@ -29,7 +29,7 @@ class MonthField(DateTimeField):
 
         if dt is None:
             self.data = None
-            raise ValueError("value %r not in month format" % date_str)
+            raise ValueError(u"Field should be in YYYY-MM format (such as “2012-01”).")
         self.data = dt.date()
 
 
@@ -44,7 +44,7 @@ class MakerForm(Form):
 
 class ParticipationForm(Form):
 
-    role = TextField(u'Role', [validators.Length(min=1, max=140)])
+    role = TextField(u'Role', [validators.Required(), validators.Length(max=140)])
     start_date = MonthField(u'Start month')
     end_date = MonthField(u'End month', [validators.Optional()],
         description=u'Enter months like “2012-01”. Leave the end month blank for current ongoing projects.')
