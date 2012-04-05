@@ -44,16 +44,7 @@
             $('#{{ maker_form.avatar_url.id }}').keydown(function () {
                 $.doTimeout('maker-{{ maker_form.avatar_url.id }}', 500, updateAvatarImage);
             });
-
-            $('#maker-form').apiForm({
-                success: function () {
-                    console.log('SUCCESS');
-                    window.location.reload();
-                },
-                error: function () {
-                    console.log('ERROR');
-                }
-            });
+            $('#maker-form').displayForm();
         });
     </script>
     {% endif %}
