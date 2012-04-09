@@ -99,7 +99,7 @@
             <p class="party-info display">
                 {{ party.role }}<br>
                 {{ party.start_date|date('%B %Y') }}
-                {% if not party.end_month %}
+                {% if not party.end_year %}
                     &ndash; <!-- present -->
                 {% elif party.end_month == party.start_month and party.end_year == party.start_year %}
                 {% else %}
