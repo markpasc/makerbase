@@ -97,3 +97,7 @@ h2 {
 .display-form .display, .display-form.edit form {
     display: block;
 }
+
+.history {
+    margin-top: 4ex;
+}

@@ -5,8 +5,9 @@
 {% block htmlhead %}
     {{ super() }}
     <style type="text/css">
-        .edit-button {
+        .edit-button, .project-body .btn {
             float: right;
+            margin-left: 1em;
         }
 
         body.edit .participant {
@@ -36,6 +37,7 @@
             {% if project_form %}
                 <button class="edit-button btn"><i class="icon-edit"></i></button>
             {% endif %}
+            <a href="{{ url_for('project_history', slug=project._id) }}" class="btn"><i class="icon-calendar"></i> View history</a>
 
             <h2><a href="{{ url_for('project', slug=project._id) }}">{{ project.name }}</a></h2>
 

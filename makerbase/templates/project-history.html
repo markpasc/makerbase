@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}History of {{ project.name }} on {{ super() }}{% endblock %}
+
+{% block htmlhead %}
+    {{ super() }}
+    <style type="text/css">
+        .history .label { font-size: 1em; }
+        .history img { vertical-align: middle; }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="project display-form clearfix">
+
+        <a href="{{ url_for('project', slug=project._id) }}" class="project-logo small-logo">
+        {% if project.avatar_url %}
+            <img src="{{ project.avatar_url }}" width="150" height="150" alt="">
+        {% else %}
+            <img src="{{ url_for('static', filename='default-project.png') }}" width="150" height="150" alt="">
+        {% endif %}
+        </a>
+
+        <h2><a href="{{ url_for('project', slug=project._id) }}">{{ project.name }}</a></h2>
+
+        {% if project.html_url %}
+            <p>
+                <a href="{{ project.html_url }}" rel="nofollow">{{ project.html_url|pretty_url }}</a>
+                <a class="icon-share-alt" href="{{ project.html_url }}" rel="nofollow"></a>
+            </p>
+        {% endif %}
+
+        {% if project.description %}
+            <p>{{ project.description }}</p>
+        {% endif %}
+
+    </div>
+
+    <div class="history">
+        {% for histitem in history %}
+
+            <p>
+                {{ histitem.when_date|date("%Y-%m-%d %H:%M:%S") }}
+                {% if histitem.action == 'create' %}
+                    <span class="label label-success">Created</span>
+                {% elif histitem.action == 'edit' %}
+                    <span class="label label-info">Edited</span>
+                {% endif %}
+
+                <a href="{{ histitem.user.profile_url }}"><img src="{{ histitem.user.avatar_url }}" width="24" height="24" alt=""></a>
+                <a href="{{ histitem.user.profile_url }}">{{ histitem.user.name }}</a>
+
+                {{ histitem.reason }}
+            </p>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}

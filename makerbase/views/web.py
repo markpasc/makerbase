@@ -70,9 +70,21 @@ def maker_history(slug):
         html = render_template('maker-new.html', slug=slug)
         return make_response(html, 404)
 
-    history = list(maker.history)
+    history = sorted(maker.history, key=lambda x: x.when)
 
     return render_template('maker-history.html', maker=maker, history=history)
+
+
+@app.route('/project/<slug>/history')
+def project_history(slug):
+    project = Project.get(slug)
+    if project is None:
+        html = render_template('project-new.html', slug=slug)
+        return make_response(html, 404)
+
+    history = sorted(project.history, key=lambda x: x.when)
+
+    return render_template('project-history.html', project=project, history=history)
 
 
 @app.errorhandler(404)
