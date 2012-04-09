@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}History of {{ maker.name }} on {{ super() }}{% endblock %}
+
+{% block htmlhead %}
+    {{ super() }}
+    <style type="text/css">
+        .history .label { font-size: 1em; }
+        .history img { vertical-align: middle; }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="maker display-form clearfix">
+        <a href="{{ url_for('maker', slug=maker._id) }}" class="maker-logo small-logo">
+        {% if maker.avatar_url %}
+            <img src="{{ maker.avatar_url }}" width="150" height="150" alt="">
+        {% else %}
+            <img src="{{ url_for('static', filename='default-maker.png') }}" width="150" height="150" alt="">
+        {% endif %}
+        </a>
+
+        <h2><a href="{{ url_for('maker', slug=maker._id) }}">{{ maker.name }}</a></h2>
+
+        {% if maker.html_url %}
+            <p>
+                <a href="{{ maker.html_url }}" rel="nofollow">{{ maker.html_url|pretty_url }}</a>
+                <a class="icon-share-alt" href="{{ maker.html_url }}" rel="nofollow"></a>
+            </p>
+        {% endif %}
+
+        {% if maker.description %}
+            <p>{{ maker.description }}</p>
+        {% endif %}
+
+    </div>
+
+    <div class="history">
+        {% for histitem in history %}
+
+            <p>
+                {{ histitem.when_date|date("%Y-%m-%d %H:%M:%S") }}
+                {% if histitem.action == 'create' %}
+                    <span class="label label-success">Created</span>
+                {% elif histitem.action == 'edit' %}
+                    <span class="label label-info">Edited</span>
+                {% endif %}
+
+                <a href="{{ histitem.user.profile_url }}"><img src="{{ histitem.user.avatar_url }}" width="24" height="24" alt=""></a>
+                <a href="{{ histitem.user.profile_url }}">{{ histitem.user.name }}</a>
+
+                {{ histitem.reason }}
+            </p>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}

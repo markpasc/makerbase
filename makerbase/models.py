@@ -269,5 +269,15 @@ class History(Robject):
 
     user = Link('user')
 
+    @property
+    def when_date(self):
+        if not self.when:
+            return
+        return datetime.datetime.strptime(self.when, '%Y-%m-%dT%H:%M:%S')
+
+    @when_date.setter
+    def when_date(self, dt):
+        self.when = dt.isoformat()
+
 
 __all__ = ('Project', 'Maker', 'Participation', 'User', 'History')

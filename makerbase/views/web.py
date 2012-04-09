@@ -63,6 +63,18 @@ def maker(slug):
     return render_template('maker.html', maker=maker, parties=parties, **forms)
 
 
+@app.route('/maker/<slug>/history')
+def maker_history(slug):
+    maker = Maker.get(slug)
+    if maker is None:
+        html = render_template('maker-new.html', slug=slug)
+        return make_response(html, 404)
+
+    history = list(maker.history)
+
+    return render_template('maker-history.html', maker=maker, history=history)
+
+
 @app.errorhandler(404)
 def not_found(exc):
     return render_template('not_found.html')
