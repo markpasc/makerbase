@@ -5,8 +5,9 @@
 {% block htmlhead %}
     {{ super() }}
     <style type="text/css">
-        .edit-button {
+        .maker-body .btn {
             float: right;
+            margin-left: 1em;
         }
 
         body.edit .participant {
@@ -36,6 +37,7 @@
             {% if maker_form %}
                 <button class="edit-button btn"><i class="icon-edit"></i></button>
             {% endif %}
+            <a href="{{ url_for('maker_history', slug=maker._id) }}" class="btn"><i class="icon-calendar"></i> View history</a>
 
             <h2><a href="{{ url_for('maker', slug=maker._id) }}">{{ maker.name }}</a></h2>
 
