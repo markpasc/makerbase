@@ -46,6 +46,10 @@
                     <span class="label label-success">Created</span>
                 {% elif histitem.action == 'edit' %}
                     <span class="label label-info">Edited</span>
+                {% elif histitem.action == 'addparty' %}
+                    <span class="label label-success">Add participant</span>
+                {% elif histitem.action == 'editparty' %}
+                    <span class="label label-info">Edit participant</span>
                 {% endif %}
 
                 <a href="{{ histitem.user.profile_url }}"><img src="{{ histitem.user.avatar_url }}" width="24" height="24" alt=""></a>

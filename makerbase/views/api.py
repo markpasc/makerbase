@@ -109,7 +109,22 @@ class ParticipationAPI(ResourceView):
     formclass = ParticipationForm
 
     def make_history(self, obj, form, action):
-        pass
+        history = History(
+            action='editparty',  # both posts and puts are editparties
+            reason=form.reason.data,
+            when=datetime.utcnow().replace(microsecond=0).isoformat(),
+        )
+        history.add_link(current_user, tag='user')
+        history.save()
+
+        obj.add_link(history, tag='history')
+
+        maker = obj.maker
+        maker.add_link(history, tag='history')
+        maker.save()
+        project = obj.project
+        project.add_link(history, tag='history')
+        project.save()
 
 
 class ProjectPartiesAPI(RobjectView):
@@ -145,13 +160,26 @@ class ProjectPartiesAPI(RobjectView):
                     'maker': ['Maker ID is invalid'],
                 }
             }), 400)
+
+        history = History(
+            action='addparty',
+            reason=form.reason.data,
+            when=datetime.utcnow().replace(microsecond=0).isoformat(),
+        )
+        history.add_link(current_user, tag='user')
+        history.save()
+
         party.add_link(maker, tag='maker')
+        party.add_link(history, tag='history')
         party.save()
 
         maker.add_link(party, tag='participation')
+        maker.add_link(history, tag='history')
         maker.save()
         proj.add_link(party, tag='participation')
+        proj.add_link(history, tag='history')
         proj.save()
+
         return self.render(party)
 
 
