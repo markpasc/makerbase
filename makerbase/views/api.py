@@ -1,9 +1,10 @@
+from datetime import datetime
 import json
 import traceback
 
 from flask import abort, request, Response
 from flask.views import MethodView
-from flaskext.login import login_required
+from flaskext.login import login_required, current_user
 from werkzeug.datastructures import MultiDict
 
 from makerbase import app
@@ -40,6 +41,12 @@ class ResourceView(RobjectView):
             abort(404)
         return self.render(obj)
 
+    def history_for_post(self, obj, form):
+        pass
+
+    def history_for_put(self, obj, form):
+        pass
+
     @login_required
     def post(self, slug):
         obj = self.objclass.get(slug)
@@ -54,6 +61,8 @@ class ResourceView(RobjectView):
             }), 400)
 
         form.populate_obj(obj)
+        del obj.reason
+        self.history_for_post(obj, form)
         obj.save()
 
         return self.render(obj)
@@ -80,6 +89,17 @@ class MakerAPI(ResourceView):
 
     objclass = Maker
     formclass = MakerForm
+
+    def history_for_post(self, obj, form):
+        history = History(
+            action='edit',
+            reason=form.reason.data,
+            when=datetime.utcnow().replace(microsecond=0).isoformat(),
+        )
+        history.add_link(current_user, tag='user')
+        history.save()
+
+        obj.add_link(history, tag='history')
 
 
 class ProjectAPI(ResourceView):

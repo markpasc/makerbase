@@ -33,6 +33,14 @@ participation: {
     'end_year': 2012
     'end_year': 1
 }
+
+history: {
+    <link to user>
+    'action': '[create edit]'
+    'reason': "140 char description"
+    'when': <iso8601 timestamp>
+    'new': { obj data? }
+}
 """
 
 

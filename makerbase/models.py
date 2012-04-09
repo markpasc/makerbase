@@ -186,11 +186,13 @@ class Robject(object):
 class Project(Robject):
 
     parties = LinkSet('participation')
+    history = LinkSet('history')
 
 
 class Maker(Robject):
 
     parties = LinkSet('participation')
+    history = LinkSet('history')
 
 
 class Participation(Robject):
@@ -263,4 +265,9 @@ class User(Robject):
         return self.id
 
 
-__all__ = ('Project', 'Maker', 'Participation', 'User')
+class History(Robject):
+
+    user = Link('user')
+
+
+__all__ = ('Project', 'Maker', 'Participation', 'User', 'History')
