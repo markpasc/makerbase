@@ -41,11 +41,16 @@ class ResourceView(RobjectView):
             abort(404)
         return self.render(obj)
 
-    def history_for_post(self, obj, form):
-        pass
+    def make_history(self, obj, form, action):
+        history = History(
+            action=action,
+            reason=form.reason.data,
+            when=datetime.utcnow().replace(microsecond=0).isoformat(),
+        )
+        history.add_link(current_user, tag='user')
+        history.save()
 
-    def history_for_put(self, obj, form):
-        pass
+        obj.add_link(history, tag='history')
 
     @login_required
     def post(self, slug):
@@ -62,7 +67,7 @@ class ResourceView(RobjectView):
 
         form.populate_obj(obj)
         del obj.reason
-        self.history_for_post(obj, form)
+        self.make_history(obj, form, 'edit')
         obj.save()
 
         return self.render(obj)
@@ -80,6 +85,7 @@ class ResourceView(RobjectView):
         if obj is None:
             obj = self.objclass(slug)
         form.populate_obj(obj)
+        self.make_history(obj, form, 'create')
         obj.save()
 
         return self.render(obj)
@@ -89,17 +95,6 @@ class MakerAPI(ResourceView):
 
     objclass = Maker
     formclass = MakerForm
-
-    def history_for_post(self, obj, form):
-        history = History(
-            action='edit',
-            reason=form.reason.data,
-            when=datetime.utcnow().replace(microsecond=0).isoformat(),
-        )
-        history.add_link(current_user, tag='user')
-        history.save()
-
-        obj.add_link(history, tag='history')
 
 
 class ProjectAPI(ResourceView):
@@ -112,6 +107,9 @@ class ParticipationAPI(ResourceView):
 
     objclass = Participation
     formclass = ParticipationForm
+
+    def make_history(self, obj, form, action):
+        pass
 
 
 class ProjectPartiesAPI(RobjectView):
