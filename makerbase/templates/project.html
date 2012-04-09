@@ -69,6 +69,7 @@
                 </fieldset>
 
                 <div class="form-actions">
+                    {{ render_tiny_field(project_form.reason) }}
                     <button class="btn btn-primary">Save changes</button>
                     <button class="btn cancel">Cancel</button>
                 </div>
@@ -114,6 +115,7 @@
                     {{ render_field_help(party.form.end_date) }}
 
                     <div class="form-actions">
+                        {{ render_tiny_field(party.form.reason) }}
                         <button class="btn btn-primary">Save changes</button>
                         <button class="btn cancel">Cancel</button>
                     </div>
@@ -142,6 +144,7 @@
             {{ render_tiny_field(add_party_form.start_date) }} &ndash; {{ render_tiny_field(add_party_form.end_date) }}
 
             <div class="form-actions">
+                {{ render_tiny_field(add_party_form.reason) }}
                 <button class="btn btn-primary">Add participant</button>
                 <button class="btn cancel">Cancel</button>
             </div>

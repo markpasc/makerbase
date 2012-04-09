@@ -35,11 +35,12 @@ class MonthField(DateTimeField):
 
 class MakerForm(Form):
 
-    name = TextField(u'Name', [validators.Length(min=1, max=100), validators.Required()])
+    name = TextField(u'Name', [validators.Required(), validators.Length(max=100)])
     avatar_url = TextField(u'Avatar URL', [validators.URL(require_tld=True), validators.Optional()],
         description=u'Avatar images should display at 150×150 and 75×75 pixel sizes.')
     html_url = TextField(u'Web URL', [validators.URL(require_tld=True), validators.Required()],
         description=u"Web URLs should be the address of the person's main personal web site.")
+    reason = TextField(u'Reason or source', [validators.Required(), validators.Length(max=140)])
 
 
 class ParticipationForm(Form):
@@ -48,6 +49,7 @@ class ParticipationForm(Form):
     start_date = MonthField(u'Start month')
     end_date = MonthField(u'End month', [validators.Optional()],
         description=u'Enter months like “2012-01”. Leave the end month blank for current ongoing projects.')
+    reason = TextField(u'Reason or source', [validators.Required(), validators.Length(max=140)])
 
 
 class ProjectForm(Form):
@@ -58,6 +60,7 @@ class ProjectForm(Form):
     description = TextField(u'Description', [validators.Length(max=140)])
     avatar_url = TextField(u'Avatar URL', [validators.URL(require_tld=True), validators.Optional()],
         description=u'Avatar images should display at 150×150 and 75×75 pixel sizes.')
+    reason = TextField(u'Reason or source', [validators.Required(), validators.Length(max=140)])
 
 
 class ProjectAddParticipationForm(ParticipationForm):
