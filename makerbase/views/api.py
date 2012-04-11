@@ -42,15 +42,7 @@ class ResourceView(RobjectView):
         return self.render(obj)
 
     def make_history(self, obj, form, action):
-        history = History(
-            action=action,
-            reason=form.reason.data,
-            when=datetime.utcnow().replace(microsecond=0).isoformat(),
-        )
-        history.add_link(current_user, tag='user')
-        history.save()
-
-        obj.add_link(history, tag='history')
+        pass
 
     @login_required
     def post(self, slug):
@@ -96,11 +88,35 @@ class MakerAPI(ResourceView):
     objclass = Maker
     formclass = MakerForm
 
+    def make_history(self, obj, form, action):
+        history = History(
+            action='addmaker' if action == 'create' else 'editmaker',
+            reason=form.reason.data,
+            when=datetime.utcnow().replace(microsecond=0).isoformat(),
+        )
+        history.add_link(current_user, tag='user')
+        history.add_link(obj, tag='maker')
+        history.save()
+
+        obj.add_link(history, tag='history')
+
 
 class ProjectAPI(ResourceView):
 
     objclass = Project
     formclass = ProjectForm
+
+    def make_history(self, obj, form, action):
+        history = History(
+            action='addproject' if action == 'create' else 'editproject',
+            reason=form.reason.data,
+            when=datetime.utcnow().replace(microsecond=0).isoformat(),
+        )
+        history.add_link(current_user, tag='user')
+        history.add_link(obj, tag='project')
+        history.save()
+
+        obj.add_link(history, tag='history')
 
 
 class ParticipationAPI(ResourceView):
@@ -115,6 +131,8 @@ class ParticipationAPI(ResourceView):
             when=datetime.utcnow().replace(microsecond=0).isoformat(),
         )
         history.add_link(current_user, tag='user')
+        history.add_link(obj.maker, tag='maker')
+        history.add_link(obj.project, tag='project')
         history.save()
 
         obj.add_link(history, tag='history')
@@ -167,6 +185,8 @@ class ProjectPartiesAPI(RobjectView):
             when=datetime.utcnow().replace(microsecond=0).isoformat(),
         )
         history.add_link(current_user, tag='user')
+        history.add_link(maker, tag='maker')
+        history.add_link(proj, tag='project')
         history.save()
 
         party.add_link(maker, tag='maker')

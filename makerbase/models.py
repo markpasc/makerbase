@@ -173,14 +173,15 @@ class Robject(object):
         except AttributeError:
             app.logger.debug("Oops, remembering link from %r to %r with tag %r to save later when source %r is saved", self, target, tag, self)
             self._before_store.append(partial(self.add_link, target, tag=tag))
-            return
+            return self
         try:
             target_entity = target._entity
         except AttributeError:
             app.logger.debug("Oops, remembering link from %r to %r with tag %r to save later when target %r is saved", self, target, tag, target)
             target._after_store.append(partial(self.add_link, target, tag=tag))
-            return
+            return self
         entity.add_link(target_entity, tag=tag)
+        return self
 
 
 class Project(Robject):
@@ -268,6 +269,8 @@ class User(Robject):
 class History(Robject):
 
     user = Link('user')
+    maker = Link('maker')
+    project = Link('project')
 
     @property
     def when_date(self):

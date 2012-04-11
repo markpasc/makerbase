@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 import makerbase
 from makerbase.models import *
 
@@ -56,9 +58,24 @@ def empty_bucket(cls):
         blit(cls, key)
 
 
-for cls in (Project, Maker, Participation):
+for cls in (Project, Maker, Participation, History):
     empty_bucket(cls)
 
+
+def now():
+    somewhen = datetime(2012, 4, 11, 13, 0, 0)
+    while True:
+        yield somewhen.isoformat()
+        somewhen += timedelta(minutes=1)
+
+now = now()
+
+
+
+editor = User(
+    'github:markpasc',
+)
+editor.save()
 
 mlkshk = Project(
     'mlkshk',
@@ -69,6 +86,12 @@ mlkshk = Project(
 )
 mlkshk.save()
 
+History(
+    action='addproject',
+    reason='new project',
+    when=now.next(),
+).add_link(editor, tag='user').add_link(mlkshk, tag='project').save()
+
 me = Maker(
     'markpasc',
     name='Mark Paschal',
@@ -76,6 +99,12 @@ me = Maker(
     avatar_url='https://secure.gravatar.com/avatar/30e5bdec1073df6350d27b8145bf0dab?s=140&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png',
 )
 me.save()
+
+History(
+    action='addmaker',
+    reason='new maker',
+    when=now.next(),
+).add_link(editor, tag='user').add_link(me, tag='maker').save()
 
 andre = Maker(
     'torrez',
@@ -85,6 +114,12 @@ andre = Maker(
 )
 andre.save()
 
+History(
+    action='addmaker',
+    reason='new maker',
+    when=now.next(),
+).add_link(editor, tag='user').add_link(me, tag='maker').save()
+
 amber = Maker(
     'amber',
     name='Amber Costley',
@@ -92,6 +127,12 @@ amber = Maker(
     avatar_url='https://si0.twimg.com/profile_images/1452719858/twit.jpg',
 )
 amber.save()
+
+History(
+    action='addmaker',
+    reason='new maker',
+    when=now.next(),
+).add_link(editor, tag='user').add_link(me, tag='maker').save()
 
 party = Participation(
     role='Creator and programmer',
@@ -109,6 +150,12 @@ andre.save()
 mlkshk.add_link(party, tag='participation')
 mlkshk.save()
 
+History(
+    action='addparty',
+    reason='worked with andre on that',
+    when=now.next(),
+).add_link(editor, tag='user').add_link(andre, tag='maker').add_link(mlkshk, tag='project').save()
+
 party = Participation(
     role='Creator and designer',
     start_month=11,
@@ -124,6 +171,12 @@ amber.save()
 
 mlkshk.add_link(party, tag='participation')
 mlkshk.save()
+
+History(
+    action='addparty',
+    reason='worked with amber on that',
+    when=now.next(),
+).add_link(editor, tag='user').add_link(amber, tag='maker').add_link(mlkshk, tag='project').save()
 
 party = Participation(
     role='Contract API programmer & test writer',
@@ -142,6 +195,12 @@ me.save()
 
 mlkshk.add_link(party, tag='participation')
 mlkshk.save()
+
+History(
+    action='addparty',
+    reason='i worked on that',
+    when=now.next(),
+).add_link(editor, tag='user').add_link(me, tag='maker').add_link(mlkshk, tag='project').save()
 
 anildash = Maker(
     'anildash',

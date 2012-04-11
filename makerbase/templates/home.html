@@ -8,6 +8,11 @@
             font-size: 1.2em;
             line-height: 1.5em;
         }
+
+        #projects, #edits {
+            width: 50%;
+            float: left;
+        }
     </style>
 {% endblock %}
 
@@ -17,22 +22,54 @@
         <p>Makerbase is a directory of people who make bits and atoms and the things they made.</p>
     </div>
 
-    <h2>Projects</h2>
-
     <div id="projects">
-    {% for project in projects %}
-        <div class="project clearfix">
-            <a href="{{ url_for('project', slug=project._id) }}" class="project-logo">
-            {% if project.avatar_url %}
-                <img src="{{ project.avatar_url }}" width="75" height="75" alt="">
-            {% else %}
-                <img src="{{ url_for('static', filename='default-project.png') }}" width="75" height="75" alt="">
-            {% endif %}
-            </a>
+        <h2>Projects</h2>
 
-            <h3><a href="{{ url_for('project', slug=project._id) }}">{{ project.name }}</a></h3>
-        </div>
-    {% endfor %}
+        {% for project in projects %}
+            <div class="project clearfix">
+                <a href="{{ url_for('project', slug=project._id) }}" class="project-logo">
+                {% if project.avatar_url %}
+                    <img src="{{ project.avatar_url }}" width="75" height="75" alt="">
+                {% else %}
+                    <img src="{{ url_for('static', filename='default-project.png') }}" width="75" height="75" alt="">
+                {% endif %}
+                </a>
+
+                <h3><a href="{{ url_for('project', slug=project._id) }}">{{ project.name }}</a></h3>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="edits">
+        <h2>Recent edits</h2>
+        {% for histitem in history %}
+            <div class="edit clearfix">
+                <a href="{{ histitem.user.profile_url }}"><img src="{{ histitem.user.avatar_url }}" width="24" height="24" alt=""></a>
+                <a href="{{ histitem.user.profile_url }}">{{ histitem.user.name }}</a>
+
+                {% if histitem.action == 'addmaker' %}
+                    <span class="label label-success">added</span> maker
+                    <a href="{{ url_for('maker', slug=histitem.maker._id) }}">{{ histitem.maker.name }}</a>
+                {% elif histitem.action == 'editmaker' %}
+                    <span class="label label-info">edited</span> maker
+                    <a href="{{ url_for('maker', slug=histitem.maker._id) }}">{{ histitem.maker.name }}</a>
+                {% elif histitem.action == 'addproject' %}
+                    <span class="label label-success">added</span> project
+                    <a href="{{ url_for('project', slug=histitem.project._id) }}">{{ histitem.project.name }}</a>
+                {% elif histitem.action == 'editproject' %}
+                    <span class="label label-info">edited</span> project
+                    <a href="{{ url_for('project', slug=histitem.project._id) }}">{{ histitem.project.name }}</a>
+                {% elif histitem.action == 'addparty' %}
+                    <span class="label label-success">added</span>
+                    <a href="{{ url_for('maker', slug=histitem.maker._id) }}">{{ histitem.maker.name }}</a> to
+                    <a href="{{ url_for('project', slug=histitem.project._id) }}">{{ histitem.project.name }}</a>
+                {% elif histitem.action == 'editparty' %}
+                    <span class="label label-info">edited</span>
+                    <a href="{{ url_for('maker', slug=histitem.maker._id) }}">{{ histitem.maker.name }}</a>’s role in
+                    <a href="{{ url_for('project', slug=histitem.project._id) }}">{{ histitem.project.name }}</a>
+                {% endif %}
+            </div>
+        {% endfor %}
     </div>
 
 {% endblock %}
