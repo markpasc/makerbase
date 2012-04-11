@@ -7,7 +7,7 @@ from makerbase.models import *
 
 def for_class(*classes):
     def do_that(fn):
-        @wraps
+        @wraps(fn)
         def do_for_class():
             for cls in classes:
                 keys = cls.get_bucket().get_keys()
