@@ -1,4 +1,3 @@
-from itertools import islice
 import json
 import traceback
 from urllib import urlencode
@@ -22,7 +21,7 @@ def home():
     projects = (Project.get(key) for key in project_keys)
 
     history_keys = History.get_bucket().get_keys()
-    history = islice((History.get(key) for key in history_keys), 10)
+    history = (History.get(key) for key in history_keys)
 
     return render_template('home.html', projects=projects, history=history)
 
