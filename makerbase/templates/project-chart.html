@@ -1,5 +1,5 @@
 {% if parties %}
-<div id="project-chart">
+<div id="project-chart" class="chart">
     <div class="clearfix">
         <h3 id="first-month" class="bounds"></h3>
         <h3 id="last-month" class="bounds"></h3>
@@ -15,6 +15,7 @@
         {% for party in project.parties %}
             {
                 name: '{{ party.maker.name }}',
+                url: '{{ url_for('maker', slug=party.maker._id) }}',
                 start: {{ party.start_year }} * 12 + {{ party.start_month }},
                 {% if party.end_year %}
                 end: {{ party.end_year }} * 12 + {{ party.end_month }}
@@ -52,10 +53,12 @@
             .data(months);
         chart.enter().append('div');
         chart
-            .attr('class', 'month')
-            .text(function (d) { return d.name })
+            .attr('class', 'month label label-info')
             .style('left', function (d) { return monthPx(d.start) + 'px' })
-            .style('width', function (d) { return (monthPx(d.end + 1) - monthPx(d.start)) + 'px' });
+            .style('width', function (d) { return (monthPx(d.end + 1) - monthPx(d.start)) + 'px' })
+            .append('a')
+            .attr('href', function (d) { return d.url })
+            .text(function (d) { return d.name })
         chart.exit().remove();
     });
 </script>
