@@ -138,6 +138,7 @@ class Robject(object):
         for fn in before_store:
             app.logger.debug("~YAY~ doing a thing saved for before %r saves", self)
             fn()
+        app.logger.debug("finished before-store steps for %r, storing entity", self)
 
         entity.store()
 
@@ -145,6 +146,7 @@ class Robject(object):
         for fn in after_store:
             app.logger.debug("~YAY~ doing a thing saved for after %r saves", self)
             fn()
+        app.logger.debug("finished after-store steps for %r, yay yay", self)
 
     def delete(self):
         try:

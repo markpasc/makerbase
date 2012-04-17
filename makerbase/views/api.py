@@ -77,6 +77,10 @@ class ResourceView(RobjectView):
         if obj is None:
             obj = self.objclass(slug)
         form.populate_obj(obj)
+        del obj.reason
+        # Save our obj first so our history item's link to it will save.
+        obj.save()
+
         self.make_history(obj, form, 'create')
         obj.save()
 
