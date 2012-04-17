@@ -48,3 +48,13 @@ def fix_project_history(project):
             histitem.add_link(project, tag='project')
 
         histitem.save()
+
+
+@for_class(Project)
+def save_all_projects(project):
+    project.save()
+
+
+@for_class(Maker)
+def save_all_makers(maker):
+    maker.save()
