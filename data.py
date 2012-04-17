@@ -74,6 +74,9 @@ now = now()
 
 editor = User(
     'github:markpasc',
+    name='Mark Paschal',
+    avatar_url='https://secure.gravatar.com/avatar/30e5bdec1073df6350d27b8145bf0dab?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png',
+    html_url='https://github.com/markpasc',
 )
 editor.save()
 
