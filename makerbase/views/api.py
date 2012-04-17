@@ -38,7 +38,7 @@ class ResourceView(RobjectView):
     def get(self, slug):
         obj = self.objclass.get(slug)
         if obj is None:
-            abort(404)
+            return Response(json.dumps({}), 404)
         return self.render(obj)
 
     def make_history(self, obj, form, action):
@@ -48,7 +48,7 @@ class ResourceView(RobjectView):
     def post(self, slug):
         obj = self.objclass.get(slug)
         if obj is None:
-            abort(404)
+            return Response(json.dumps({}), 404)
 
         data = json.loads(request.data)
         form = self.formclass(MultiDict(data), obj)
@@ -150,14 +150,14 @@ class ProjectPartiesAPI(RobjectView):
     def get(self, slug):
         proj = Project.get(slug)
         if proj is None:
-            abort(404)
+            return Response(json.dumps({}), 404)
         return self.render(list(proj.parties))
 
     @login_required
     def post(self, slug):
         proj = Project.get(slug)
         if proj is None:
-            abort(404)
+            return Response(json.dumps({}), 404)
 
         data = json.loads(request.data)
         form = ProjectAddParticipationForm(MultiDict(data))
