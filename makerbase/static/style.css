@@ -25,9 +25,14 @@ h1, h2, #project-form input[name="name"] {
     height: 0.8em;
 }
 
+#header {
+    margin-bottom: 2em;
+}
+
 h1 {
     display: inline-block;
-    margin: 0 0 2ex;
+    vertical-align: middle;
+    margin: 0 0.5ex 0 0;
     padding: 0.2ex 0.5ex 0ex 0.5ex;
 
     font-size: 2em;
