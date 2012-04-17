@@ -18,10 +18,10 @@ from makerbase.models import *
 def home():
     # TODO: LOOOOOL don't get all the keys in the bucket.
     project_keys = Project.get_bucket().get_keys()
-    projects = (Project.get(key) for key in project_keys)
+    projects = (Project.get(key) for key in sorted(project_keys))
 
     history_keys = History.get_bucket().get_keys()
-    history = (History.get(key) for key in history_keys)
+    history = sorted((History.get(key) for key in history_keys), key=lambda h: h.when, reverse=True)
 
     return render_template('home.html', projects=projects, history=history)
 
