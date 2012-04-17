@@ -203,7 +203,39 @@ class ProjectPartiesAPI(RobjectView):
         return self.render(party)
 
 
+class AutocompleteAPI(RobjectView):
+
+    robject_for_kind = {
+        'maker': Maker,
+        'project': Project,
+    }
+
+    def get(self):
+        kind = request.args.get('kind', '')
+        try:
+            robj_class = self.robject_for_kind[kind]
+        except KeyError:
+            return Response(json.dumps({
+                'errors': {
+                    'kind': ['Unknown autocomplete kind %r' % kind],
+                }
+            }), 400)
+
+        try:
+            query = request.args['q']
+        except KeyError:
+            return Response(json.dumps({
+                'errors': {
+                    'q': ['Query parameter is required'],
+                }
+            }), 400)
+
+        results = robj_class.search(name='%s*' % query)
+        return self.render(list(results))
+
+
 app.add_url_rule('/api/maker/<slug>', view_func=MakerAPI.as_view('api_maker'))
 app.add_url_rule('/api/project/<slug>', view_func=ProjectAPI.as_view('api_project'))
 app.add_url_rule('/api/project/<slug>/parties', view_func=ProjectPartiesAPI.as_view('api_project_parties'))
 app.add_url_rule('/api/participation/<slug>', view_func=ParticipationAPI.as_view('api_participation'))
+app.add_url_rule('/api/autocomplete', view_func=AutocompleteAPI.as_view('api_autocomplete'))
