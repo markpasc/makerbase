@@ -17,6 +17,15 @@
         #add-party-form {
             margin-top: 4ex;
         }
+
+        #add-party-maker-dropdown {
+            margin-left: 90px;
+        }
+        #add-party-maker-dropdown a {
+            cursor: pointer;
+            vertical-align: middle;
+            line-height: 24px;
+        }
     </style>
 {% endblock %}
 
@@ -139,7 +148,10 @@
             </span>
 
             <div class="control-group">
-                <input class="input-xxlarge" id="{{ add_party_form.maker.id }}" name="{{ add_party_form.maker.name }}" value="{% if add_party_form.maker.data is not none %}{{ add_party_form.maker.data }}{% endif %}" placeholder="{{ add_party_form.maker.label.text }}">
+                <div class="dropdown">
+                    <input class="input-xxlarge" id="{{ add_party_form.maker.id }}" name="{{ add_party_form.maker.name }}" value="{% if add_party_form.maker.data is not none %}{{ add_party_form.maker.data }}{% endif %}" placeholder="{{ add_party_form.maker.label.text }}">
+                    <ul id="add-party-maker-dropdown" class="dropdown-menu"></ul>
+                </div>
                 <h3 id="add-party-maker-name">No maker selected</h3>
             </div>
             {{ render_field(add_party_form.role) }}
@@ -154,13 +166,57 @@
     </div>
 
     <script type="text/javascript">
+        function completeName() {
+            $.doTimeout('add-party-maker-name-search');
+            var $this = $(this);
+            $('#{{ add_party_form.maker.id }}').val($this.attr('data-maker-id'));
+            $('#add-party-maker-dropdown').hide();
+            updateMakerNameSearch();
+            return false;
+        }
+
+        function autocompleteMakerName() {
+            var name = $('#{{ add_party_form.maker.id }}').val();
+            $.ajax({
+                url: '{{ url_for('api_autocomplete') }}',
+                data: {
+                    kind: 'maker',
+                    q: name
+                },
+                dataType: 'json',  // received
+                success: function (data) {
+                    // Show the autocomplete dropdown.
+                    // Fill in the dropdown with these names.
+                    var $derpdown = $('#add-party-maker-dropdown');
+                    $derpdown.html('');
+                    $.each(data, function (i, val) {
+                        var $item = $('<li/>');
+                        var $itemLink = $('<a/>');
+                        var $itemImage = $('<img/>');
+                        $itemImage.attr('width', '24');
+                        $itemImage.attr('height', '24');
+                        $itemImage.attr('src', val.avatar_url || '{{ url_for('static', filename='default-maker.png') }}');
+                        $itemLink.append($itemImage);
+                        $itemLink.attr('data-maker-id', val.id);
+                        $itemLink.append(' ' + val.name);
+                        $itemLink.click(completeName);
+                        $item.append($itemLink);
+                        $derpdown.append($item);
+                    });
+                    $derpdown.show();
+                },
+                error: {
+                    // oop?
+                }
+            });
+        }
+
         function updateMakerNameSearch() {
             var name = $('#{{ add_party_form.maker.id }}').val();
             $.ajax({
                 url: '{{ url_for('api_maker', slug='') }}' + name,
                 dataType: 'json',  // received
                 success: function (data) {
-                    console.log(data);
                     $('#add-party-pic').attr('src', data.avatar_url);
                     var $link = $('<a/>');
                     $link.attr('href', '{{ url_for('maker', slug='') }}' + name);
@@ -177,7 +233,15 @@
 
         $(function () {
             $('#{{ add_party_form.maker.id }}').keydown(function () {
-                $.doTimeout('add-party-{{ add_party_form.maker.id }}', 500, updateMakerNameSearch);
+                $('#add-party-pic').attr('src', '{{ url_for('static', filename='default-maker.png') }}');
+                $('#add-party-maker-name').html('No maker selected');
+                $.doTimeout('add-party-{{ add_party_form.maker.id }}', 500, autocompleteMakerName);
+            }).blur(function () {
+                $.doTimeout('add-party-maker-name-search', 500, updateMakerNameSearch);
+            }).blur(function () {
+                $.doTimeout('add-party-maker-name-search-hide', 500, function () {
+                    $('#add-party-maker-dropdown').hide();
+                });
             });
             $('#add-party-form form').displayForm();
         });

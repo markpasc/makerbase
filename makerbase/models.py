@@ -111,6 +111,8 @@ class Robject(object):
     def get_api_data(self):
         data = self.get_entity_data()
 
+        data['id'] = self.id
+
         links = self._entity.get_links()
         for link in links:
             tag, value = link.get_tag(), link.get_key()
