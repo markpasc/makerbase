@@ -1,5 +1,6 @@
 import datetime
 from functools import partial
+from itertools import chain
 import json
 from urllib import urlencode
 from urlparse import parse_qs, urlunsplit
@@ -150,6 +151,16 @@ class Robject(object):
             pass
         else:
             entity.delete()
+
+    @classmethod
+    def search(cls, *args, **kwargs):
+        query_parts = chain(args, (':'.join((k, v)) for k, v in kwargs.iteritems()))
+        query_text = ' AND '.join(query_parts)
+        app.logger.debug('Searching bucket %r with query %r', cls._bucket, query_text)
+        query = riakclient.search(cls._bucket, query_text)
+
+        for result in query.run():
+            yield cls._new_for_entity(result.get())
 
     def get_link(self, tag):
         link_iter = self.get_links(tag)

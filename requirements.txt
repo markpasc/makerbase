@@ -2,4 +2,4 @@ Flask
 Flask-Login
 Flask-WTF
 requests
-riak
+riak>=1.4.0
