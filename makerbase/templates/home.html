@@ -17,6 +17,11 @@
             width: 55%;
             float: right;
         }
+
+        #find-input {
+            font-size: 1.5em;
+            height: 1em;
+        }
     </style>
 {% endblock %}
 
@@ -24,6 +29,19 @@
 
     <div id="about">
         <p>Makerbase is a directory of people who make bits and atoms and the things they made.</p>
+    </div>
+
+    <div id="find">
+        <h2>Find a project or maker</h2>
+
+        <form class="clearfix" action="{{ url_for('api_autocomplete') }}" method="POST">
+            <div class="control-group">
+                <div class="dropdown">
+                    <input class="input-xxlarge" id="find-input" name="find-input" placeholder="Enter a name">
+                    <ul id="find-dropdown" class="dropdown-menu"></ul>
+                </div>
+            </div>
+        </form>
     </div>
 
     <div id="projects">
@@ -75,5 +93,52 @@
             </div>
         {% endfor %}
     </div>
+
+    <script type="text/javascript">
+        function autocompleteMakerName() {
+            var name = $('#find-input').val();
+            $.ajax({
+                url: '{{ url_for('api_autocomplete') }}',
+                data: {
+                    q: name
+                },
+                dataType: 'json',  // received
+                success: function (data) {
+                    // Show the autocomplete dropdown.
+                    // Fill in the dropdown with these names.
+                    var $derpdown = $('#find-dropdown');
+                    $derpdown.html('');
+                    $.each(data, function (i, val) {
+                        var $item = $('<li/>');
+                        var $itemLink = $('<a/>');
+                        var $itemImage = $('<img/>');
+                        $itemImage.attr('width', '24');
+                        $itemImage.attr('height', '24');
+                        $itemImage.attr('src', val.avatar_url || '{{ url_for('static', filename='default-maker.png') }}');
+                        $itemLink.append($itemImage);
+                        $itemLink.attr('href', val.permalink);
+                        $itemLink.append(' ' + val.name);
+                        $item.append($itemLink);
+                        $derpdown.append($item);
+                    });
+                    $derpdown.show();
+                },
+                error: {
+                    // oop?
+                }
+            });
+        }
+
+        $(function () {
+            $('#find-input').keydown(function () {
+                $.doTimeout('find-input', 500, autocompleteMakerName);
+            }).blur(function () {
+                $.doTimeout('find-dropdown-hide', 500, function () {
+                    $('#find-dropdown').hide();
+                });
+            });
+            $('#find form').displayForm();
+        });
+    </script>
 
 {% endblock %}

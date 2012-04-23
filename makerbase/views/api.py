@@ -1,4 +1,5 @@
 from datetime import datetime
+from itertools import chain
 import json
 import traceback
 
@@ -210,14 +211,15 @@ class ProjectPartiesAPI(RobjectView):
 class AutocompleteAPI(RobjectView):
 
     robject_for_kind = {
-        'maker': Maker,
-        'project': Project,
+        'maker': (Maker,),
+        'project': (Project,),
+        '': (Maker, Project),
     }
 
     def get(self):
         kind = request.args.get('kind', '')
         try:
-            robj_class = self.robject_for_kind[kind]
+            robj_classes = self.robject_for_kind[kind]
         except KeyError:
             return Response(json.dumps({
                 'errors': {
@@ -234,7 +236,17 @@ class AutocompleteAPI(RobjectView):
                 }
             }), 400)
 
-        results = robj_class.search(name='%s*' % query)
+        results = ()
+        for robj_class in robj_classes:
+            results = chain(results, robj_class.search(name='%s*' % query))
+
+        def with_permalink(items):
+            for item in items:
+                data = item.get_api_data(include_links=False)
+                data['permalink'] = item.permalink()
+                yield data
+
+        results = with_permalink(results)
         return self.render(list(results))
 
 

@@ -6,6 +6,7 @@ from urllib import urlencode
 from urlparse import parse_qs, urlunsplit
 import uuid
 
+from flask import url_for
 import riak
 
 from makerbase import app
@@ -108,20 +109,21 @@ class Robject(object):
     def get_entity_data(self):
         return dict((k, v) for k, v in self.__dict__.iteritems() if not k.startswith('_'))
 
-    def get_api_data(self):
+    def get_api_data(self, include_links=True):
         data = self.get_entity_data()
 
         data['id'] = self.id
 
-        links = self._entity.get_links()
-        for link in links:
-            tag, value = link.get_tag(), link.get_key()
-            if tag not in data:
-                data[tag] = value
-            elif tag in data and not isinstance(data[tag], list):
-                data[tag] = [data[tag], value]
-            else:
-                data[tag].append(value)
+        if include_links:
+            links = self._entity.get_links()
+            for link in links:
+                tag, value = link.get_tag(), link.get_key()
+                if tag not in data:
+                    data[tag] = value
+                elif tag in data and not isinstance(data[tag], list):
+                    data[tag] = [data[tag], value]
+                else:
+                    data[tag].append(value)
 
         return data
 
@@ -198,14 +200,21 @@ class Robject(object):
         entity.add_link(target_entity, tag=tag)
         return self
 
+    def permalink(self):
+        return url_for(self.permalink_view, slug=self._id)
+
 
 class Project(Robject):
+
+    permalink_view = 'project'
 
     parties = LinkSet('participation')
     history = LinkSet('history')
 
 
 class Maker(Robject):
+
+    permalink_view = 'maker'
 
     parties = LinkSet('participation')
     history = LinkSet('history')
