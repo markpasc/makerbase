@@ -12,7 +12,7 @@
     var nowMonth = now.getFullYear() * 12 + now.getMonth();
 
     var months = [
-        {% for party in project.parties %}
+        {% for party in parties %}
             {
                 name: '{{ party.maker.name }}',
                 url: '{{ url_for('maker', slug=party.maker._id) }}',
