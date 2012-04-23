@@ -94,3 +94,8 @@ def project_history(slug):
 @app.errorhandler(404)
 def not_found(exc):
     return render_template('not_found.html')
+
+
+@app.route('/error')
+def error():
+    raise NotImplementedError()
