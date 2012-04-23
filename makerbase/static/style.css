@@ -25,8 +25,13 @@ h1, h2, #project-form input[name="name"] {
     height: 0.8em;
 }
 
-#header {
+#header, #footer {
     margin-bottom: 2em;
+}
+
+#footer {
+    font-size: 0.8em;
+    text-align: center;
 }
 
 h1 {
