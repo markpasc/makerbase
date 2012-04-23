@@ -96,7 +96,7 @@
     </script>
     {% endif %}
 
-    {% for party in maker.parties %}
+    {% for party in parties %}
         <div class="participant clearfix">
 
             <a href="{{ url_for('project', slug=party.project._id) }}" class="project-logo">
