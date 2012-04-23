@@ -57,6 +57,8 @@
                 {{ histitem.reason }}
             </p>
 
+        {% else %}
+            <p>We don't have any history for {{ maker.name }}. Perhaps someone added them before we were recording history.</p>
         {% endfor %}
     </div>
 

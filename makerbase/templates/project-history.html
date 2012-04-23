@@ -58,6 +58,8 @@
                 {{ histitem.reason }}
             </p>
 
+        {% else %}
+            <p>We don’t have any history for {{ project.name }}. Perhaps someone added it before we were recording history.</p>
         {% endfor %}
     </div>
 
