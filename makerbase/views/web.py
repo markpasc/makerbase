@@ -34,8 +34,10 @@ def project(slug):
     if proj is None:
         if current_user.is_authenticated():
             forms['project_form'] = ProjectForm()
+            if request.args.get('create'):
+                forms['create'] = True
         html = render_template('project-new.html', slug=slug, **forms)
-        return make_response(html, 404)
+        return make_response(html, 200 if forms.get('create') else 404)
 
     parties = list(proj.parties)
 

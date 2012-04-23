@@ -32,7 +32,7 @@
     </div>
 
     <div id="find">
-        <h2>Find a project or maker</h2>
+        <h2>Find a project</h2>
 
         <form class="clearfix" action="{{ url_for('api_autocomplete') }}" method="POST">
             <div class="control-group">
@@ -100,6 +100,7 @@
             $.ajax({
                 url: '{{ url_for('api_autocomplete') }}',
                 data: {
+                    kind: 'project',
                     q: name
                 },
                 dataType: 'json',  // received
@@ -121,6 +122,26 @@
                         $item.append($itemLink);
                         $derpdown.append($item);
                     });
+
+                    {% if current_user.is_authenticated() %}
+                        if (data.length) {
+                            var $divider = $('<li/>');
+                            $divider.addClass('divider');
+                            $derpdown.append($divider);
+                        }
+
+                        var $newItem = $('<li/>');
+                        var $newItemLink = $('<a/>');
+                        var $newItemImage = $('<i/>');
+                        $newItemImage.addClass('icon-plus');
+                        $newItemLink.append($newItemImage);
+                        var nameSlug = name.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9\-]/g,'').toLowerCase();
+                        $newItemLink.attr('href', '{{ url_for('project', slug='') }}' + nameSlug + '?create=yes');
+                        $newItemLink.append(' Add “' + name + '”');
+                        $newItem.append($newItemLink);
+                        $derpdown.append($newItem);
+                    {% endif %}
+
                     $derpdown.show();
                 },
                 error: {
