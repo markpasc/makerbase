@@ -63,7 +63,7 @@ def complete_github():
     user = User.get(userid)
     if user is None:
         user = User(userid)
-    user.name = github_user['name']
+    user.name = github_user.get('name') or github_user['login']
     user.avatar_url = github_user['avatar_url']
     user.profile_url = github_user['html_url']
     user.save()
