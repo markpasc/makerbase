@@ -59,6 +59,8 @@ def maker(slug):
     if maker is None:
         if current_user.is_authenticated():
             forms['maker_form'] = MakerForm()
+            if request.args.get('create'):
+                forms['create'] = True
         html = render_template('maker-new.html', slug=slug, **forms)
         return make_response(html, 404)
 

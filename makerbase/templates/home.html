@@ -17,7 +17,7 @@
             width: 55%;
             float: right;
         }
-        #edit img {
+        #edit img, #find-dropdown img {
             width: 24px;
             height: 24px;
         }
@@ -36,7 +36,7 @@
     </div>
 
     <div id="find">
-        <h2>Find a project</h2>
+        <h2>Find a project or maker</h2>
 
         <form class="clearfix" action="{{ url_for('api_autocomplete') }}" method="POST">
             <div class="control-group">
@@ -104,7 +104,6 @@
             $.ajax({
                 url: '{{ url_for('api_autocomplete') }}',
                 data: {
-                    kind: 'project',
                     q: name
                 },
                 dataType: 'json',  // received
@@ -134,16 +133,23 @@
                             $derpdown.append($divider);
                         }
 
-                        var $newItem = $('<li/>');
-                        var $newItemLink = $('<a/>');
-                        var $newItemImage = $('<i/>');
-                        $newItemImage.addClass('icon-plus');
-                        $newItemLink.append($newItemImage);
                         var nameSlug = name.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9\-]/g,'').toLowerCase();
-                        $newItemLink.attr('href', '{{ url_for('project', slug='') }}' + nameSlug + '?create=yes');
-                        $newItemLink.append(' Add “' + name + '”');
-                        $newItem.append($newItemLink);
-                        $derpdown.append($newItem);
+                        var $projectItem = $('<li/>');
+                        var $projectItemLink = $('<a/>');
+                        var $projectItemImage = $('<i/>');
+                        $projectItemImage.addClass('icon-plus');
+                        $projectItemLink.append($projectItemImage);
+                        $projectItemLink.attr('href', '{{ url_for('project', slug='') }}' + nameSlug + '?create=yes');
+                        $projectItem.append($projectItemLink);
+                        var $makerItem = $projectItem.clone();
+
+                        $projectItemLink.append(' Add project “' + name + '”');
+                        $derpdown.append($projectItem);
+
+                        $makerItem.find('a')
+                            .attr('href', '{{ url_for('maker', slug='') }}' + nameSlug + '?create=yes')
+                            .append(' Add maker “' + name + '”');
+                        $derpdown.append($makerItem);
                     {% endif %}
 
                     $derpdown.show();
