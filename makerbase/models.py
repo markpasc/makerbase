@@ -120,6 +120,9 @@ class Robject(object):
                 tag, value = link.get_tag(), link.get_key()
                 if tag not in data:
                     data[tag] = value
+                # TODO: use whether the model's link is a Link or LinkSet
+                # to determine listiness, so we don't get sets of one link
+                # serialized as scalar data.
                 elif tag in data and not isinstance(data[tag], list):
                     data[tag] = [data[tag], value]
                 else:
@@ -225,8 +228,8 @@ class Participation(Robject):
     maker = Link('maker')
     project = Link('project')
 
-    def get_api_data(self):
-        data = super(Participation, self).get_api_data()
+    def get_api_data(self, include_links=True):
+        data = super(Participation, self).get_api_data(include_links=include_links)
         try:
             del data['start_year']
             del data['start_month']
