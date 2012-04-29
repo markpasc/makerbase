@@ -150,6 +150,12 @@
                             .attr('href', '{{ url_for('maker', slug='') }}' + nameSlug + '?create=yes')
                             .append(' Add maker “' + name + '”');
                         $derpdown.append($makerItem);
+                    {% else %}
+                        if (!data.length) {
+                            var $nope = $('<li/>');
+                            $nope.text('No projects or makers found.');
+                            $derpdown.append($nope);
+                        }
                     {% endif %}
 
                     $derpdown.show();
