@@ -153,7 +153,10 @@
                     {% else %}
                         if (!data.length) {
                             var $nope = $('<li/>');
-                            $nope.text('No projects or makers found.');
+                            var $nopeLink = $('<a/>');
+                            $nopeLink.text('No projects or makers found.');
+                            $nopeLink.click(function () { return false; });
+                            $nope.append($nopeLink);
                             $derpdown.append($nope);
                         }
                     {% endif %}
