@@ -83,6 +83,13 @@ h2 {
     height: 150px;
 }
 
+.tiny-logo {
+    float: none;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+}
+
 .chart {
     margin: 4ex 0;
 }

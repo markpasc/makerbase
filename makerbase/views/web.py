@@ -17,13 +17,10 @@ from makerbase.models import *
 @app.route('/')
 def home():
     # TODO: LOOOOOL don't get all the keys in the bucket.
-    project_keys = Project.get_bucket().get_keys()
-    projects = (Project.get(key) for key in sorted(project_keys))
-
     history_keys = History.get_bucket().get_keys()
-    history = sorted((History.get(key) for key in history_keys), key=lambda h: h.when, reverse=True)
+    history = sorted((h for h in (History.get(key) for key in history_keys) if h.action.endswith('party')), key=lambda h: h.when, reverse=True)
 
-    return render_template('home.html', projects=projects, history=history)
+    return render_template('home.html', history=history)
 
 
 @app.route('/project/<slug>')
