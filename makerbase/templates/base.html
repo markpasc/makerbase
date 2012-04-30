@@ -54,6 +54,9 @@
             #twitter-signin-btn:before {
                 background: transparent url({{ url_for('static', filename='auth-icons.png') }}) no-repeat -22px 0px;
             }
+            #linkedin-signin-btn:before {
+                background: transparent url({{ url_for('static', filename='LinkedIn_Logo16px.png') }}) no-repeat 0px 0px;
+            }
         </style>
         {% endblock %}
     </head>
@@ -74,6 +77,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="signin-btn" id="github-signin-btn" href="{{ url_for('signin_github') }}?next={{ request.path }}">GitHub</a></li>
+                            <li><a class="signin-btn" id="linkedin-signin-btn" href="{{ url_for('signin_linkedin') }}?next={{ request.path }}">LinkedIn</a></li>
                             <li><a class="signin-btn" id="twitter-signin-btn" href="{{ url_for('signin_twitter') }}?next={{ request.path }}">Twitter</a></li>
                         </ul>
                     </div>

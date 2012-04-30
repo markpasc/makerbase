@@ -61,6 +61,32 @@ def signin_twitter():
     return redirect(redirect_url)
 
 
+@app.route('/signin/linkedin')
+def signin_linkedin():
+    urlparts = urlsplit(request.base_url)
+    callback_url = urlunsplit((urlparts.scheme, urlparts.netloc, url_for('complete_linkedin'), None, None))
+
+    consumer = oauth2.Consumer(key=app.config['LINKEDIN_KEY'], secret=app.config['LINKEDIN_SECRET'])
+    client = oauth2.Client(consumer)
+    query_args = {'oauth_callback': callback_url}
+    request_token_url = 'https://api.linkedin.com/uas/oauth/requestToken?%s' % urlencode(query_args)
+    resp, content = client.request(request_token_url, 'GET')
+    assert resp.status == 200
+
+    request_token = dict(parse_qsl(content))
+    session['linkedin_request_token'] = request_token
+    redirect_url = 'https://www.linkedin.com/uas/oauth/authenticate?oauth_token=%s' % request_token['oauth_token']
+
+    try:
+        next_url = request.args['next']
+    except KeyError:
+        pass
+    else:
+        session['signin_next_url'] = next_url
+
+    return redirect(redirect_url)
+
+
 @app.route('/signout')
 def signout():
     logout_user()
@@ -137,6 +163,53 @@ def complete_twitter():
     user.name = twitter_user['name']
     user.avatar_url = twitter_user['profile_image_url']
     user.profile_url = u'https://twitter.com/%s' % twitter_user['screen_name']
+    user.save()
+
+    login_user(user)
+
+    try:
+        next_url = session['signin_next_url']
+    except KeyError:
+        next_url = url_for('home')
+    else:
+        del session['signin_next_url']
+    return redirect(next_url)
+
+
+@app.route('/complete/linkedin')
+def complete_linkedin():
+    try:
+        verifier = request.args.get('oauth_verifier')
+    except KeyError:
+        raise  # TODO
+
+    request_token = session['linkedin_request_token']
+    del session['linkedin_request_token']
+
+    consumer = oauth2.Consumer(key=app.config['LINKEDIN_KEY'], secret=app.config['LINKEDIN_SECRET'])
+    token = oauth2.Token(request_token['oauth_token'], request_token['oauth_token_secret'])
+    token.set_verifier(verifier)
+    client = oauth2.Client(consumer, token)
+    resp, content = client.request('https://api.linkedin.com/uas/oauth/accessToken', 'POST')
+    assert resp.status == 200
+
+    access_token = dict(parse_qsl(content))
+    token = oauth2.Token(access_token['oauth_token'], access_token['oauth_token_secret'])
+    client = oauth2.Client(consumer, token)
+    resp, content = client.request('http://api.linkedin.com/v1/people/~:(id,formatted-name,picture-url,public-profile-url)', headers={
+        'accept-language': 'en-US',
+        'x-li-format': 'json',
+    })
+    assert resp.status == 200
+
+    linkedin_user = json.loads(content)
+    userid = u'linkedin:%s' % linkedin_user['id']
+    user = User.get(userid)
+    if user is None:
+        user = User(userid)
+    user.name = linkedin_user.get('formattedName')
+    user.avatar_url = linkedin_user.get('pictureUrl')
+    user.profile_url = linkedin_user.get('publicProfileUrl')
     user.save()
 
     login_user(user)
