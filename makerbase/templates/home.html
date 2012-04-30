@@ -61,7 +61,7 @@
                     <a href="{{ url_for('project', slug=project._id) }}" class="project-logo tiny-logo"><img src="{% if project.avatar_url %}{{ project.avatar_url }}{% else %}{{ url_for('static', filename='default-project.png') }}{% endif %}" width="75" height="75" alt=""></a>
 
                     <a href="{{ url_for('maker', slug=histitem.maker._id) }}">{{ histitem.maker.name }}</a>
-                    worked on
+                    {{ ["worked on", "helped make", "made some of", "did part of"]|random }}
                     <a href="{{ url_for('project', slug=project._id) }}">{{ project.name }}</a>
                 </span>
                 according to
