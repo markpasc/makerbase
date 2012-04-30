@@ -36,10 +36,10 @@
 
         {% block htmlhead %}
         <style type="text/css">
-            #github-signin-btn {
+            .signin-btn {
                 line-height: 22px;
             }
-            #github-signin-btn:before {
+            .signin-btn:before {
                 display: inline-block;
                 vertical-align: middle;
                 content: "";
@@ -47,7 +47,12 @@
                 height: 22px;
                 padding: 0;
                 margin: 0;
+            }
+            #github-signin-btn:before {
                 background: transparent url({{ url_for('static', filename='auth-icons.png') }}) no-repeat -44px 0px;
+            }
+            #twitter-signin-btn:before {
+                background: transparent url({{ url_for('static', filename='auth-icons.png') }}) no-repeat -22px 0px;
             }
         </style>
         {% endblock %}
@@ -60,16 +65,31 @@
             <div id="header">
                 <h1><a href="{{ url_for('home') }}">makerbase</a></h1>
 
+                <span id="sign-in">
                 {% if current_user.is_anonymous() %}
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                            Sign in with...
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="signin-btn" id="github-signin-btn" href="{{ url_for('signin_github') }}?next={{ request.path }}">GitHub</a></li>
+                            <li><a class="signin-btn" id="twitter-signin-btn" href="{{ url_for('signin_twitter') }}?next={{ request.path }}">Twitter</a></li>
+                        </ul>
+                    </div>
+<!--
+
                     <a id="github-signin-btn" class="btn" href="{{ url_for('signin_github') }}?next={{ request.path }}">
                         Sign in with <strong>GitHub</strong>
                     </a>
+                    -->
                 {% else %}
-                    <span>Hello, {{ current_user.name }}!</span>
-                    <a id="github-signout-btn" class="btn" href="{{ url_for('signout') }}?next={{ request.path }}">
+                    <span>Hello, <a href="{{ current_user.profile_url }}" class="maker-logo tiny-tiny-logo"><img src="{% if current_user.avatar_url %}{{ current_user.avatar_url }}{% else %}{{ url_for('static', filename='default-maker.png') }}{% endif %}"></a> <a href="{{ current_user.profile_url }}">{{ current_user.name }}</a>!</span>
+                    <a id="signout-btn" class="btn" href="{{ url_for('signout') }}?next={{ request.path }}">
                         Sign out
                     </a>
                 {% endif %}
+                </span>
             </div>
 
             {% with messages = get_flashed_messages(with_categories=True) %}

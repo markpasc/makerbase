@@ -60,6 +60,12 @@ h1 a:hover, h2 a:hover, .chart .month a:hover {
     text-decoration: underline;
 }
 
+#sign-in {
+    display: inline-block;
+    float: right;
+    height: 100%;
+}
+
 .container {
     width: 720px;
     margin-bottom: 10ex;
@@ -87,6 +93,12 @@ h2 {
     float: none;
     width: 24px;
     height: 24px;
+    margin: 0;
+}
+.tiny-tiny-logo {
+    float: none;
+    width: 16px;
+    height: 16px;
     margin: 0;
 }
 
