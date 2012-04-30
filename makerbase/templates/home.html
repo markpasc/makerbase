@@ -10,6 +10,9 @@
         }
 
         #facts .fact {
+            margin: 1ex 0;
+        }
+        #facts .fact-body {
             font-size: 1.5em;
         }
 
@@ -44,9 +47,9 @@
         {% for histitem in history %}
             {% set maker = histitem.maker %}
             {% set project = histitem.project %}
-            <div class="clearfix">
+            <div class="fact clearfix">
 
-                <span class="fact">
+                <span class="fact-body">
                     <a href="{{ url_for('maker', slug=maker._id) }}" class="maker-logo tiny-logo"><img src="{% if maker.avatar_url %}{{ maker.avatar_url }}{% else %}{{ url_for('static', filename='default-maker.png') }}{% endif %}" width="75" height="75" alt=""></a>
                     <a href="{{ url_for('maker', slug=histitem.maker._id) }}">{{ histitem.maker.name }}</a>
                     worked on
