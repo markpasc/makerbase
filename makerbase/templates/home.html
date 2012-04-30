@@ -10,10 +10,17 @@
         }
 
         #facts .fact {
-            margin: 1ex 0;
+            margin: 2ex 0;
         }
         #facts .fact-body {
             font-size: 1.5em;
+        }
+
+        .tiny-tiny-logo {
+            width: 16px;
+            height: 16px;
+            float: none;
+            margin: 0;
         }
 
         #find-input {
@@ -51,13 +58,14 @@
 
                 <span class="fact-body">
                     <a href="{{ url_for('maker', slug=maker._id) }}" class="maker-logo tiny-logo"><img src="{% if maker.avatar_url %}{{ maker.avatar_url }}{% else %}{{ url_for('static', filename='default-maker.png') }}{% endif %}" width="75" height="75" alt=""></a>
+                    <a href="{{ url_for('project', slug=project._id) }}" class="project-logo tiny-logo"><img src="{% if project.avatar_url %}{{ project.avatar_url }}{% else %}{{ url_for('static', filename='default-project.png') }}{% endif %}" width="75" height="75" alt=""></a>
+
                     <a href="{{ url_for('maker', slug=histitem.maker._id) }}">{{ histitem.maker.name }}</a>
                     worked on
                     <a href="{{ url_for('project', slug=project._id) }}">{{ project.name }}</a>
-                    <a href="{{ url_for('project', slug=project._id) }}" class="project-logo tiny-logo"><img src="{% if project.avatar_url %}{{ project.avatar_url }}{% else %}{{ url_for('static', filename='default-project.png') }}{% endif %}" width="75" height="75" alt=""></a>
                 </span>
                 according to
-                <a href="{{ histitem.user.profile_url }}" class="maker-logo tiny-logo"><img src="{{ histitem.user.avatar_url }}" width="24" height="24" alt=""></a>
+                <a href="{{ histitem.user.profile_url }}" class="maker-logo tiny-tiny-logo"><img src="{{ histitem.user.avatar_url }}" width="12" height="12" alt=""></a>
                 <a href="{{ histitem.user.profile_url }}">{{ histitem.user.name }}</a>
 
             </div>
