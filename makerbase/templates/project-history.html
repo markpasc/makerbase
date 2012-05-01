@@ -76,8 +76,12 @@
             var oldHistory = {};
             var newHistory = {};
             {% for histitem in history %}
-                oldHistory['{{ histitem._id }}'] = {{ histitem.old_data|tojson|safe }};
-                newHistory['{{ histitem._id }}'] = {{ histitem.new_data|tojson|safe }};
+                {% if histitem.old_data %}
+                    oldHistory['{{ histitem._id }}'] = {{ histitem.old_data|tojson|safe }};
+                {% endif %}
+                {% if histitem.new_data %}
+                    newHistory['{{ histitem._id }}'] = {{ histitem.new_data|tojson|safe }};
+                {% endif %}
             {% endfor %}
 
             $(function () {
@@ -86,8 +90,8 @@
                     var $item = $btn.parents('.histitem');
                     var histid = $item.attr('data-hist-id');
 
-                    var oldItem = oldHistory[histid];
-                    var newItem = newHistory[histid];
+                    var oldItem = oldHistory[histid] || {};
+                    var newItem = newHistory[histid] || {};
                     var itemDiff = jsondiffpatch.diff(oldItem, newItem);
 
                     var $show = $item.next('pre');
