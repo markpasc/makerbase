@@ -84,3 +84,13 @@ def add_data_to_history(obj):
     newest_item.old_data = {}
     newest_item.new_data = new_data
     newest_item.save()
+
+
+@for_class(Participation)
+def remove_party_reasons(party):
+    try:
+        del party.reason
+    except AttributeError:
+        pass
+    else:
+        party.save()

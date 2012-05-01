@@ -184,6 +184,7 @@ class ProjectPartiesAPI(RobjectView):
         party = Participation()
         form.populate_obj(party)
         del party.maker
+        del party.reason
         party.add_link(proj, tag='project')
 
         maker = Maker.get(form.maker.data)
