@@ -94,3 +94,21 @@ def remove_party_reasons(party):
         pass
     else:
         party.save()
+
+
+@for_class(History)
+def remove_party_reasons_from_history(histitem):
+    if not histitem.action.endswith('party'):
+        return
+
+    try:
+        del histitem.old_data['reason']
+    except (AttributeError, KeyError):
+        pass
+
+    try:
+        del histitem.new_data['reason']
+    except (AttributeError, KeyError):
+        pass
+
+    histitem.save()
