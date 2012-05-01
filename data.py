@@ -89,11 +89,16 @@ mlkshk = Project(
 )
 mlkshk.save()
 
-History(
+h = History(
     action='addproject',
     reason='new project',
     when=now.next(),
-).add_link(editor, tag='user').add_link(mlkshk, tag='project').save()
+    old_data={},
+    new_data=mlkshk.get_entity_data(),
+).add_link(editor, tag='user').add_link(mlkshk, tag='project')
+h.save()
+
+mlkshk.add_link(h, tag='history').save()
 
 me = Maker(
     'markpasc',
@@ -103,11 +108,16 @@ me = Maker(
 )
 me.save()
 
-History(
+h = History(
     action='addmaker',
     reason='new maker',
     when=now.next(),
-).add_link(editor, tag='user').add_link(me, tag='maker').save()
+    old_data={},
+    new_data=me.get_entity_data(),
+).add_link(editor, tag='user').add_link(me, tag='maker')
+h.save()
+
+me.add_link(h, tag='history').save()
 
 andre = Maker(
     'torrez',
@@ -117,11 +127,16 @@ andre = Maker(
 )
 andre.save()
 
-History(
+h = History(
     action='addmaker',
     reason='new maker',
     when=now.next(),
-).add_link(editor, tag='user').add_link(me, tag='maker').save()
+    old_data={},
+    new_data=andre.get_entity_data(),
+).add_link(editor, tag='user').add_link(andre, tag='maker')
+h.save()
+
+andre.add_link(h, tag='history').save()
 
 amber = Maker(
     'amber',
@@ -131,11 +146,16 @@ amber = Maker(
 )
 amber.save()
 
-History(
+h = History(
     action='addmaker',
     reason='new maker',
     when=now.next(),
-).add_link(editor, tag='user').add_link(me, tag='maker').save()
+    old_data={},
+    new_data=amber.get_entity_data(),
+).add_link(editor, tag='user').add_link(amber, tag='maker')
+h.save()
+
+amber.add_link(h, tag='history').save()
 
 party = Participation(
     role='Creator and programmer',
@@ -153,11 +173,17 @@ andre.save()
 mlkshk.add_link(party, tag='participation')
 mlkshk.save()
 
-History(
+h = History(
     action='addparty',
     reason='worked with andre on that',
     when=now.next(),
-).add_link(editor, tag='user').add_link(andre, tag='maker').add_link(mlkshk, tag='project').save()
+    old_data={},
+    new_data=party.get_entity_data(),
+).add_link(editor, tag='user').add_link(andre, tag='maker').add_link(mlkshk, tag='project')
+h.save()
+
+andre.add_link(h, tag='history').save()
+mlkshk.add_link(h, tag='history').save()
 
 party = Participation(
     role='Creator and designer',
@@ -175,11 +201,17 @@ amber.save()
 mlkshk.add_link(party, tag='participation')
 mlkshk.save()
 
-History(
+h = History(
     action='addparty',
     reason='worked with amber on that',
     when=now.next(),
-).add_link(editor, tag='user').add_link(amber, tag='maker').add_link(mlkshk, tag='project').save()
+    old_data={},
+    new_data=party.get_entity_data(),
+).add_link(editor, tag='user').add_link(amber, tag='maker').add_link(mlkshk, tag='project')
+h.save()
+
+amber.add_link(h, tag='history').save()
+mlkshk.add_link(h, tag='history').save()
 
 party = Participation(
     role='Contract API programmer & test writer',
@@ -199,11 +231,17 @@ me.save()
 mlkshk.add_link(party, tag='participation')
 mlkshk.save()
 
-History(
+h = History(
     action='addparty',
     reason='i worked on that',
     when=now.next(),
-).add_link(editor, tag='user').add_link(me, tag='maker').add_link(mlkshk, tag='project').save()
+    old_data={},
+    new_data=party.get_entity_data(),
+).add_link(editor, tag='user').add_link(me, tag='maker').add_link(mlkshk, tag='project')
+h.save()
+
+me.add_link(h, tag='history').save()
+mlkshk.add_link(h, tag='history').save()
 
 anildash = Maker(
     'anildash',
@@ -212,3 +250,14 @@ anildash = Maker(
     avatar_url='https://si0.twimg.com/profile_images/1364557668/image_reasonably_small.jpg',
 )
 anildash.save()
+
+h = History(
+    action='addmaker',
+    reason='new maker',
+    when=now.next(),
+    old_data={},
+    new_data=anildash.get_entity_data(),
+).add_link(editor, tag='user').add_link(anildash, tag='maker')
+h.save()
+
+anildash.add_link(h, tag='history').save()

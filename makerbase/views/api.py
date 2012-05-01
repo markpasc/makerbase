@@ -42,7 +42,7 @@ class ResourceView(RobjectView):
             return Response(json.dumps({}), 404)
         return self.render(obj)
 
-    def make_history(self, obj, form, action):
+    def make_history(self, obj, form, action, old_data):
         pass
 
     @login_required
@@ -58,9 +58,10 @@ class ResourceView(RobjectView):
                 'errors': form.errors,
             }), 400)
 
+        old_data = obj.get_entity_data()
         form.populate_obj(obj)
         del obj.reason
-        self.make_history(obj, form, 'edit')
+        self.make_history(obj, form, 'edit', old_data)
         obj.save()
 
         return self.render(obj)
@@ -77,12 +78,14 @@ class ResourceView(RobjectView):
         obj = self.objclass.get(slug)
         if obj is None:
             obj = self.objclass(slug)
+
+        old_data = obj.get_entity_data()
         form.populate_obj(obj)
         del obj.reason
         # Save our obj first so our history item's link to it will save.
         obj.save()
 
-        self.make_history(obj, form, 'create')
+        self.make_history(obj, form, 'create', old_data)
         obj.save()
 
         return self.render(obj)
@@ -93,11 +96,13 @@ class MakerAPI(ResourceView):
     objclass = Maker
     formclass = MakerForm
 
-    def make_history(self, obj, form, action):
+    def make_history(self, obj, form, action, old_data):
         history = History(
             action='addmaker' if action == 'create' else 'editmaker',
             reason=form.reason.data,
             when=datetime.utcnow().replace(microsecond=0).isoformat(),
+            old_data=old_data,
+            new_data=obj.get_entity_data(),
         )
         history.add_link(current_user, tag='user')
         history.add_link(obj, tag='maker')
@@ -111,11 +116,13 @@ class ProjectAPI(ResourceView):
     objclass = Project
     formclass = ProjectForm
 
-    def make_history(self, obj, form, action):
+    def make_history(self, obj, form, action, old_data):
         history = History(
             action='addproject' if action == 'create' else 'editproject',
             reason=form.reason.data,
             when=datetime.utcnow().replace(microsecond=0).isoformat(),
+            old_data=old_data,
+            new_data=obj.get_entity_data(),
         )
         history.add_link(current_user, tag='user')
         history.add_link(obj, tag='project')
@@ -129,11 +136,13 @@ class ParticipationAPI(ResourceView):
     objclass = Participation
     formclass = ParticipationForm
 
-    def make_history(self, obj, form, action):
+    def make_history(self, obj, form, action, old_data):
         history = History(
             action='editparty',  # both posts and puts are editparties
             reason=form.reason.data,
             when=datetime.utcnow().replace(microsecond=0).isoformat(),
+            old_data=old_data,
+            new_data=obj.get_entity_data(),
         )
         history.add_link(current_user, tag='user')
         history.add_link(obj.maker, tag='maker')
@@ -188,6 +197,8 @@ class ProjectPartiesAPI(RobjectView):
             action='addparty',
             reason=form.reason.data,
             when=datetime.utcnow().replace(microsecond=0).isoformat(),
+            old_data={},  # addparties never have old data
+            new_data=party.get_entity_data(),
         )
         history.add_link(current_user, tag='user')
         history.add_link(maker, tag='maker')

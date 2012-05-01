@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from functools import wraps
+from itertools import islice
 
 import makerbase
 from makerbase.models import *
@@ -58,3 +59,15 @@ def save_all_projects(project):
 @for_class(Maker)
 def save_all_makers(maker):
     maker.save()
+
+
+@for_class(Project, Maker)
+def add_data_to_history(obj):
+    history = sorted(obj.history, key=lambda h: h.when, reverse=True)
+    histitems = list(islice(history, 1))
+    if not histitems:
+        return
+    newest_item = histitems[0]
+    newest_item.old_data = {}
+    newest_item.new_data = obj.get_entity_data()
+    newest_item.save()
