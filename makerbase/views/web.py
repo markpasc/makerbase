@@ -1,4 +1,3 @@
-import json
 import traceback
 from urllib import urlencode
 from urlparse import parse_qs, urlsplit, urlunsplit

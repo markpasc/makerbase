@@ -1,7 +1,6 @@
 import datetime
 from functools import partial
 from itertools import chain
-import json
 from urllib import urlencode
 from urlparse import parse_qs, urlunsplit
 import uuid
