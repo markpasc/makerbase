@@ -126,6 +126,10 @@
         <script type="text/javascript" src="{{ url_for('static', filename='jquery.apiform.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='jquery.ba-dotimeout.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='displayform.js') }}"></script>
+
+        {% block htmlfoot %}
+        {% endblock %}
+
         <script type="text/javascript">
             $.each(jqq, function(i, val) {
                 $(val);
