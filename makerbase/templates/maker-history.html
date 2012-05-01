@@ -5,9 +5,14 @@
 {% block htmlhead %}
     {{ super() }}
     <style type="text/css">
-        .history .label { font-size: 1em; }
-        .history img { vertical-align: middle; }
+        #history .label { font-size: 1em; }
+        #history img { vertical-align: middle; }
     </style>
+{% endblock %}
+
+{% block htmlfoot %}
+    <script type="text/javascript" src="{{ url_for('static', filename='jsondiffpatch.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='diff_match_patch_uncompressed.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -36,11 +41,12 @@
 
     </div>
 
-    <div class="history">
+    <div id="history">
         {% for histitem in history %}
 
-            <p>
+            <p class="histitem" data-hist-id="{{ histitem._id }}">
                 {{ histitem.when_date|date("%Y-%m-%d %H:%M:%S") }}
+
                 {% if histitem.action == 'addmaker' %}
                     <span class="label label-success">Created</span>
                 {% elif histitem.action == 'editmaker' %}
@@ -55,11 +61,43 @@
                 <a href="{{ histitem.user.profile_url }}">{{ histitem.user.name }}</a>
 
                 {{ histitem.reason }}
+
+                <button class="btn diff-button">Show diff</button>
             </p>
 
         {% else %}
             <p>We don't have any history for {{ maker.name }}. Perhaps someone added them before we were recording history.</p>
         {% endfor %}
     </div>
+
+    {% if history %}
+        <script type="text/javascript">
+            var oldHistory = {};
+            var newHistory = {};
+            {% for histitem in history %}
+                oldHistory['{{ histitem._id }}'] = {{ histitem.old_data|tojson|safe }};
+                newHistory['{{ histitem._id }}'] = {{ histitem.new_data|tojson|safe }};
+            {% endfor %}
+
+            $(function () {
+                $('#history .histitem .diff-button').click(function () {
+                    var $btn = $(this);
+                    var $item = $btn.parents('.histitem');
+                    var histid = $item.attr('data-hist-id');
+
+                    var oldItem = oldHistory[histid];
+                    var newItem = newHistory[histid];
+                    var itemDiff = jsondiffpatch.diff(oldItem, newItem);
+
+                    var $show = $item.next('pre');
+                    if (!$show.size()) {
+                        $show = $('<pre/>');
+                        $item.after($show);
+                    }
+                    $show.text($.toJSON(itemDiff));
+                });
+            });
+        </script>
+    {% endif %}
 
 {% endblock %}
