@@ -9,5 +9,9 @@ if 'MAKERBASE_SETTINGS' not in os.environ:
 
 app.config.from_envvar('MAKERBASE_SETTINGS')
 
+if 'SENTRY_DSN' in app.config:
+    from raven.contrib.flask import Sentry
+    sentry = Sentry(app, dsn=app.config['SENTRY_DSN'])
+
 if __name__ == '__main__':
     app.run(debug=True)
