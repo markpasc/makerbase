@@ -42,9 +42,9 @@
 
             <p>
                 {{ histitem.when_date|date("%Y-%m-%d %H:%M:%S") }}
-                {% if histitem.action == 'create' %}
+                {% if histitem.action == 'addproject' %}
                     <span class="label label-success">Created</span>
-                {% elif histitem.action == 'edit' %}
+                {% elif histitem.action == 'editproject' %}
                     <span class="label label-info">Edited</span>
                 {% elif histitem.action == 'addparty' %}
                     <span class="label label-success">Add participant</span>
