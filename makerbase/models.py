@@ -226,6 +226,7 @@ class Participation(Robject):
 
     maker = Link('maker')
     project = Link('project')
+    history = LinkSet('history')
 
     def get_api_data(self, include_links=True):
         data = super(Participation, self).get_api_data(include_links=include_links)

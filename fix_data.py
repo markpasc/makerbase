@@ -78,7 +78,9 @@ def add_data_to_history(obj):
 
     if newest_item.action.endswith('party'):
         new_data = newest_item.participation.get_entity_data()
+    else:
+        new_data = obj.get_entity_data()
 
     newest_item.old_data = {}
-    newest_item.new_data = obj.get_entity_data()
+    newest_item.new_data = new_data
     newest_item.save()
