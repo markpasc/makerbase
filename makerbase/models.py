@@ -297,6 +297,7 @@ class History(Robject):
     user = Link('user')
     maker = Link('maker')
     project = Link('project')
+    participation = Link('participation')
 
     @property
     def when_date(self):

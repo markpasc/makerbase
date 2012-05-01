@@ -145,6 +145,7 @@ class ParticipationAPI(ResourceView):
             new_data=obj.get_entity_data(),
         )
         history.add_link(current_user, tag='user')
+        history.add_link(obj, tag='participation')
         history.add_link(obj.maker, tag='maker')
         history.add_link(obj.project, tag='project')
         history.save()
@@ -193,6 +194,9 @@ class ProjectPartiesAPI(RobjectView):
                 }
             }), 400)
 
+        party.add_link(maker, tag='maker')
+        party.save()
+
         history = History(
             action='addparty',
             reason=form.reason.data,
@@ -203,9 +207,9 @@ class ProjectPartiesAPI(RobjectView):
         history.add_link(current_user, tag='user')
         history.add_link(maker, tag='maker')
         history.add_link(proj, tag='project')
+        history.add_link(party, tag='participation')
         history.save()
 
-        party.add_link(maker, tag='maker')
         party.add_link(history, tag='history')
         party.save()
 
