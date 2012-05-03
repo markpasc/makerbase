@@ -77,8 +77,8 @@
                 success: function (data) {
                     // Show the autocomplete dropdown.
                     // Fill in the dropdown with these names.
-                    var $derpdown = $('#find-dropdown');
-                    $derpdown.html('');
+                    var $dropdown = $('#find-dropdown');
+                    $dropdown.html('');
                     $.each(data, function (i, val) {
                         var $item = $('<li/>');
                         var $itemLink = $('<a/>');
@@ -90,14 +90,14 @@
                         $itemLink.attr('href', val.permalink);
                         $itemLink.append(' ' + val.name);
                         $item.append($itemLink);
-                        $derpdown.append($item);
+                        $dropdown.append($item);
                     });
 
                     {% if current_user.is_authenticated() %}
                         if (data.length) {
                             var $divider = $('<li/>');
                             $divider.addClass('divider');
-                            $derpdown.append($divider);
+                            $dropdown.append($divider);
                         }
 
                         var nameSlug = name.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9\-]/g,'').toLowerCase();
@@ -111,12 +111,12 @@
                         var $makerItem = $projectItem.clone();
 
                         $projectItemLink.append(' Add project “' + name + '”');
-                        $derpdown.append($projectItem);
+                        $dropdown.append($projectItem);
 
                         $makerItem.find('a')
                             .attr('href', '{{ url_for('maker', slug='') }}' + nameSlug + '?create=yes')
                             .append(' Add maker “' + name + '”');
-                        $derpdown.append($makerItem);
+                        $dropdown.append($makerItem);
                     {% else %}
                         if (!data.length) {
                             var $nope = $('<li/>');
@@ -124,11 +124,11 @@
                             $nopeLink.text('No projects or makers found.');
                             $nopeLink.click(function () { return false; });
                             $nope.append($nopeLink);
-                            $derpdown.append($nope);
+                            $dropdown.append($nope);
                         }
                     {% endif %}
 
-                    $derpdown.show();
+                    $dropdown.show();
                 },
                 error: {
                     // oop?

@@ -193,8 +193,8 @@
                 success: function (data) {
                     // Show the autocomplete dropdown.
                     // Fill in the dropdown with these names.
-                    var $derpdown = $('#add-party-maker-dropdown');
-                    $derpdown.html('');
+                    var $dropdown = $('#add-party-maker-dropdown');
+                    $dropdown.html('');
                     $.each(data, function (i, val) {
                         var $item = $('<li/>');
                         var $itemLink = $('<a/>');
@@ -207,9 +207,9 @@
                         $itemLink.append(' ' + val.name);
                         $itemLink.click(completeName);
                         $item.append($itemLink);
-                        $derpdown.append($item);
+                        $dropdown.append($item);
                     });
-                    $derpdown.show();
+                    $dropdown.show();
                 },
                 error: {
                     // oop?
