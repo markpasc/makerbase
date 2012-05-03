@@ -27,6 +27,11 @@
             line-height: 24px;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap-datepicker.css') }}">
+{% endblock %}
+
+{% block htmlfoot %}
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-datepicker.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -245,6 +250,10 @@
                 });
             });
             $('#add-party-form form').displayForm();
+            $('#add-party-form .month').datepicker({
+                format: 'yyyy-mm',
+                endDate: new Date()
+            });
         });
     </script>
     {% endif %}
@@ -263,6 +272,10 @@
                 $.doTimeout('project-{{ project_form.avatar_url.id }}', 500, updateAvatarImage);
             });
             $('#project-form').add('#participants form.party').displayForm();
+            $('#participants form.party .month').datepicker({
+                format: 'yyyy-mm',
+                endDate: new Date()
+            });
         });
     </script>
     {% endif %}
