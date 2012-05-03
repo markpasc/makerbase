@@ -209,6 +209,26 @@
                         $item.append($itemLink);
                         $dropdown.append($item);
                     });
+
+                    {% if current_user.is_authenticated() %}
+                        if (data.length) {
+                            var $divider = $('<li/>');
+                            $divider.addClass('divider');
+                            $dropdown.append($divider);
+                        }
+
+                        var nameSlug = name.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9\-]/g,'').toLowerCase();
+                        var $makerItem = $('<li/>');
+                        var $makerItemLink = $('<a/>');
+                        var $makerItemImage = $('<i/>');
+                        $makerItemImage.addClass('icon-plus');
+                        $makerItemLink.append($makerItemImage);
+                        $makerItemLink.attr('href', '{{ url_for('maker', slug='') }}' + nameSlug + '?create=yes');
+                        $makerItem.append($makerItemLink);
+                        $makerItemLink.append(' Add maker “' + name + '”');
+                        $dropdown.append($makerItem);
+                    {% endif %}
+
                     $dropdown.show();
                 },
                 error: {
