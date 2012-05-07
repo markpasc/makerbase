@@ -111,6 +111,10 @@
         </div>
 
         <div id="footer">
+            {% if FAQ_URL %}
+                <a href="{{ FAQ_URL }}">FAQ</a>
+                &bull;
+            {% endif %}
             Contributions to Makerbase licensed <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/" title="under a Creative Commons Attribution-ShareAlike 3.0 Unported License"><img alt="Creative Commons License" style="border-width:0" src="{{ url_for('static', filename='cc-by-sa.png') }}" alt="cc-by-sa"></a>
             &bull;
             <a href="{{ url_for('project', slug='makerbase') }}">Who made Makerbase?</a>

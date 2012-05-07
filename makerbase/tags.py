@@ -19,3 +19,13 @@ def pretty_url(url):
     elif len(path) > 23:
         path = path[:20] + '...'
     return host + path
+
+
+@app.context_processor
+def faq_url():
+    try:
+        faq_url = app.config['FAQ_URL']
+    except KeyError:
+        return {}
+    else:
+        return {'FAQ_URL': faq_url}
