@@ -53,12 +53,22 @@
         chart.enter().append('div');
         chart
             .attr('class', 'month label label-info')
+            .attr('title', function (d) { return d.name })
             .style('left', function (d) { return monthPx(d.start) + 'px' })
             .style('width', function (d) { return (monthPx(d.end + 1) - monthPx(d.start)) + 'px' })
             .append('a')
             .attr('href', function(d) { return d.url })
             .text(function (d) { return d.name });
         chart.exit().remove();
+
+        $('#chart-bars .month').each(function () {
+            var $month = $(this);
+            var linkHeight = $month.find('a').outerHeight();
+            var monthHeight = $month.outerHeight();
+            if (linkHeight > monthHeight) {
+                $month.tooltip();
+            }
+        });
     });
 </script>
 {% endif %}
