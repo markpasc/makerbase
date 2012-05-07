@@ -63,9 +63,8 @@
 
         $('#chart-bars .month').each(function () {
             var $month = $(this);
-            var linkHeight = $month.find('a').outerHeight();
-            var monthHeight = $month.outerHeight();
-            if (linkHeight > monthHeight) {
+            var $link = $month.find('a');
+            if ($link.outerHeight() > $month.outerHeight() || $link.outerWidth() > $month.outerWidth()) {
                 $month.tooltip();
             }
         });
