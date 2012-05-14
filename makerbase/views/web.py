@@ -95,7 +95,8 @@ def project_history(slug):
 
 @app.errorhandler(404)
 def not_found(exc):
-    return render_template('not_found.html')
+    html = render_template('not_found.html')
+    return make_response(html, 404)
 
 
 @app.route('/error')
