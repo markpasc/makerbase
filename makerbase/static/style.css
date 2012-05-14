@@ -64,6 +64,7 @@ h1 a:hover, h2 a:hover, .chart .month a:hover {
     display: inline-block;
     float: right;
     height: 100%;
+    margin-top: 4px;
 }
 
 .tooltip {
@@ -135,6 +136,14 @@ h2 {
 }
 .display-form .display, .display-form.edit form {
     display: block;
+}
+
+form .form-actions .btn {
+    vertical-align: top;
+}
+
+form input#reason {
+    font-size: 0.8em;
 }
 
 .history {
