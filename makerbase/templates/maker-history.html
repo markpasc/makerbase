@@ -7,10 +7,13 @@
     <style type="text/css">
         #history .label { font-size: 1em; }
         #history img { vertical-align: middle; }
+        .jsondiffpatch-visualdiff-root > .jsondiffpatch-property-name { display: none; }
     </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='jsondiffpatch.html.css') }}">
 {% endblock %}
 
 {% block htmlfoot %}
+    <script type="text/javascript" src="{{ url_for('static', filename='jsondiffpatch.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='jsondiffpatch.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='diff_match_patch_uncompressed.js') }}"></script>
 {% endblock %}
@@ -93,12 +96,12 @@
                     var newItem = newHistory[histid] || {};
                     var itemDiff = jsondiffpatch.diff(oldItem, newItem);
 
-                    var $show = $item.next('pre');
+                    var $show = $item.next('div');
                     if (!$show.size()) {
-                        $show = $('<pre/>');
+                        $show = $('<div/>');
                         $item.after($show);
                     }
-                    $show.text($.toJSON(itemDiff));
+                    $show.empty().append(jsondiffpatch.html.diffToHtml(oldItem, newItem, itemDiff));
                 });
             });
         </script>
