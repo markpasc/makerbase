@@ -45,7 +45,7 @@
     </div>
 
     <div id="history">
-        {% for histitem in history %}
+        {% for histitem in history|reverse %}
 
             <p class="histitem" data-hist-id="{{ histitem._id }}">
                 {{ histitem.when_date|date("%Y-%m-%d %H:%M:%S") }}
@@ -102,6 +102,8 @@
                         $item.after($show);
                     }
                     $show.empty().append(jsondiffpatch.html.diffToHtml(oldItem, newItem, itemDiff));
+
+                    $btn.hide();
                 });
             });
         </script>
