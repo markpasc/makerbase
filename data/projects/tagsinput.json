@@ -1,0 +1,14 @@
+{
+    "avatar_url": "http://xoxco.com/new/img/logo.png", 
+    "description": "Magically convert a simple text input into a cool tag list.", 
+    "html_url": "http://xoxco.com/projects/code/tagsinput/", 
+    "id": "tagsinput", 
+    "name": "jquery tags input", 
+    "participations": [
+        {
+            "maker": "benbrown", 
+            "role": "Creator", 
+            "start": "2011-04-01"
+        }
+    ]
+}

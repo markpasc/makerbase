@@ -1,0 +1,15 @@
+{
+    "avatar_url": "http://netrightdaily.com/wp-content/uploads/2012/04/Twitter.png", 
+    "description": "A microcontent social app", 
+    "html_url": "http://www.twitter.com/", 
+    "id": "twitter", 
+    "name": "Twitter", 
+    "participations": [
+        {
+            "end": "2011-03-01", 
+            "maker": "evan-williams", 
+            "role": "Co-founder", 
+            "start": "2006-07-01"
+        }
+    ]
+}

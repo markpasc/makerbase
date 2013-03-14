@@ -1,0 +1,14 @@
+{
+    "avatar_url": "", 
+    "description": "An iPhone app that turns photos into pixel art", 
+    "html_url": "http://makepixelart.com/pixelpixapp/", 
+    "id": "pixelpix", 
+    "name": "Pixel Pix", 
+    "participations": [
+        {
+            "maker": "benbrown", 
+            "role": "Creator", 
+            "start": "2012-02-01"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "avatar_url": "", 
+    "description": "Original map-based site for bookmarking places in Second Life.", 
+    "html_url": "http://landmarker.neologasm.org/", 
+    "id": "landmarker", 
+    "name": "Landmarker", 
+    "participations": [
+        {
+            "end": "2006-05-01", 
+            "maker": "markpasc", 
+            "role": "Creator & programmer", 
+            "start": "2005-05-01"
+        }
+    ]
+}

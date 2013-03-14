@@ -1,0 +1,15 @@
+{
+    "avatar_url": "http://i.imgur.com/vhkQN.png", 
+    "description": "How would *you* spend 2 days in Seattle?", 
+    "html_url": "http://2daysinseattle.com", 
+    "id": "2daysinseattle", 
+    "name": "2 Days in Seattle", 
+    "participations": [
+        {
+            "end": "2012-05-01", 
+            "maker": "lonnon", 
+            "role": "Programmer, front and back end", 
+            "start": "2011-12-01"
+        }
+    ]
+}

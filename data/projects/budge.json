@@ -1,0 +1,14 @@
+{
+    "avatar_url": "http://s3.amazonaws.com/budge_production/programs/photos/21/small_meditation-buddy.jpg", 
+    "description": "Health improvement programs that don't let you fail", 
+    "html_url": "http://bud.ge", 
+    "id": "budge", 
+    "name": "Budge", 
+    "participations": [
+        {
+            "maker": "busterbenson", 
+            "role": "Founder", 
+            "start": "2012-01-01"
+        }
+    ]
+}

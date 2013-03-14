@@ -1,0 +1,15 @@
+{
+    "avatar_url": "http://assets.killerstartups.com/reviews/logos/8b1b10575674f66a387d377e97f4973a.jpg", 
+    "description": "Probably the first crowdfunding site on the web.", 
+    "html_url": "http://dropcash.com/", 
+    "id": "dropcash", 
+    "name": "Dropcash", 
+    "participations": [
+        {
+            "end": "2007-06-01", 
+            "maker": "torrez", 
+            "role": "Creator", 
+            "start": "2003-11-01"
+        }
+    ]
+}

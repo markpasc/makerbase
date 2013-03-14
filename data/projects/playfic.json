@@ -1,0 +1,14 @@
+{
+    "avatar_url": "https://twimg0-a.akamaihd.net/profile_images/1829811712/cursor_shiny_icon.png", 
+    "description": "Write and play interactive, text-based games from your browser.", 
+    "html_url": "http://playfic.com/", 
+    "id": "playfic", 
+    "name": "Playfic", 
+    "participations": [
+        {
+            "maker": "waxpancake", 
+            "role": "Creator", 
+            "start": "2012-02-01"
+        }
+    ]
+}

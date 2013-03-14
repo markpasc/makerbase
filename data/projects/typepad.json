@@ -1,0 +1,27 @@
+{
+    "avatar_url": "http://static.typepad.com/.shared:v20120327.01-0-ge7f167b:typepad:en_us/images/app/favicons/atip-129si.png", 
+    "description": "Easily design and customize your own blog", 
+    "html_url": "http://www.typepad.com/", 
+    "id": "typepad", 
+    "name": "TypePad", 
+    "participations": [
+        {
+            "end": "2010-11-01", 
+            "maker": "markpasc", 
+            "role": "Occasional programmer", 
+            "start": "2004-05-01"
+        }, 
+        {
+            "end": "2009-10-01", 
+            "maker": "anildash", 
+            "role": "Helped launch the service, working on everything from marketing to pricing to helping major users.", 
+            "start": "2003-05-01"
+        }, 
+        {
+            "end": "2010-11-01", 
+            "maker": "apparentlymart", 
+            "role": "Programmer, API Designer", 
+            "start": "2008-10-01"
+        }
+    ]
+}

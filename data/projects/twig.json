@@ -1,0 +1,14 @@
+{
+    "avatar_url": "http://ginatrapani.org/imgs/twig-cover.jpg", 
+    "description": "A weekly web show about Google and the cloud.", 
+    "html_url": "http://twit.tv/twig", 
+    "id": "twig", 
+    "name": "This Week in Google", 
+    "participations": [
+        {
+            "maker": "ginatrapani", 
+            "role": "Host", 
+            "start": "2009-08-01"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "avatar_url": "http://metafetch-assets.s3.amazonaws.com/metafetch_150.png", 
+    "description": "Collect and share content discovered across the web. Ideal for researching and organizing web content for research, design, art.", 
+    "html_url": "http://www.metafetch.com", 
+    "id": "metafetch", 
+    "name": "Metafetch", 
+    "participations": [
+        {
+            "maker": "gleuch", 
+            "role": "Founder & Creator", 
+            "start": "2011-05-01"
+        }
+    ], 
+    "reason": "Made by artist/maker Greg Leuch"
+}

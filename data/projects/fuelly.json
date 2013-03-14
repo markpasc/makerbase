@@ -1,0 +1,19 @@
+{
+    "avatar_url": "http://d217i264rvtnq0.cloudfront.net/images/fuelly/v2/logo.gif", 
+    "description": "A social fuel economy tracker service", 
+    "html_url": "http://www.fuelly.com/", 
+    "id": "fuelly", 
+    "name": "Fuelly", 
+    "participations": [
+        {
+            "maker": "matt-haughey", 
+            "role": "Co-founder", 
+            "start": "2008-08-01"
+        }, 
+        {
+            "maker": "paul-bausch", 
+            "role": "Co-founder", 
+            "start": "2008-08-01"
+        }
+    ]
+}

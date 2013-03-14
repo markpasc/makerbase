@@ -1,0 +1,15 @@
+{
+    "avatar_url": "http://harpers.org/media/image/Harpers_305x100.gif", 
+    "description": "The website (archive, searchable index, consumer code) for Harper's Magazine.", 
+    "html_url": "http://harpers.org", 
+    "id": "harpers", 
+    "name": "Harpers.org", 
+    "participations": [
+        {
+            "end": "2010-04-01", 
+            "maker": "ftrain", 
+            "role": "Responsible for the entire web presence, including an amazing Index.", 
+            "start": "2005-02-01"
+        }
+    ]
+}

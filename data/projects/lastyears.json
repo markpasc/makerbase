@@ -1,0 +1,26 @@
+{
+    "avatar_url": "http://dashes.com/anil/images/lastyears-badge.jpg", 
+    "description": "A simple community site to encourage thoughtful consumption of gadgets.", 
+    "html_url": "http://lastyearsmodel.org/", 
+    "id": "lastyears", 
+    "name": "Last Year's Model", 
+    "participations": [
+        {
+            "maker": "anildash", 
+            "role": "I created the site and promoted the hashtag, which still gets used regularly a few years later", 
+            "start": "2009-04-01"
+        }, 
+        {
+            "end": "2009-06-01", 
+            "maker": "mike-monteiro", 
+            "role": "Designer", 
+            "start": "2009-04-01"
+        }, 
+        {
+            "end": "2009-04-01", 
+            "maker": "ginatrapani", 
+            "role": "Contributed a testimonial to the site", 
+            "start": "2009-04-01"
+        }
+    ]
+}

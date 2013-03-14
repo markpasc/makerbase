@@ -1,0 +1,27 @@
+{
+    "avatar_url": "http://static.skattertech.com/files/2009/09/movable-type-logo.jpg", 
+    "description": "Your all-in-one social publishing platform", 
+    "html_url": "http://www.movabletype.com/", 
+    "id": "movabletype", 
+    "name": "Movable Type", 
+    "participations": [
+        {
+            "end": "2008-12-01", 
+            "maker": "markpasc", 
+            "role": "Occasional programmer", 
+            "start": "2004-05-01"
+        }, 
+        {
+            "end": "2009-10-01", 
+            "maker": "anildash", 
+            "role": "I managed the business division that made MT for a few years, and did lots of stuff with the community.", 
+            "start": "2003-04-01"
+        }, 
+        {
+            "end": "2010-10-01", 
+            "maker": "djacobs", 
+            "role": "I helped program widely-used plugins for MT, founded a company to help support  plugins and the core product, and managed the MT business.", 
+            "start": "2004-04-01"
+        }
+    ]
+}

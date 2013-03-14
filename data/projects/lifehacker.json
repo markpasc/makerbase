@@ -1,0 +1,15 @@
+{
+    "avatar_url": "https://twimg0-a.akamaihd.net/profile_images/1861146796/Twitter_-_Avatar.png", 
+    "description": "Productivity and software blog.", 
+    "html_url": "http://lifehacker.com", 
+    "id": "lifehacker", 
+    "name": "Lifehacker", 
+    "participations": [
+        {
+            "end": "2009-01-01", 
+            "maker": "ginatrapani", 
+            "role": "Founding Editor", 
+            "start": "2005-01-01"
+        }
+    ]
+}

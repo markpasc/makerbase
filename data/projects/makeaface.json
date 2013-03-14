@@ -1,0 +1,21 @@
+{
+    "avatar_url": "http://make-a-face.org/static-6/makeaface/banner.png", 
+    "description": "A simple way to share your face with friends", 
+    "html_url": "http://make-a-face.org/", 
+    "id": "makeaface", 
+    "name": "Make A Face", 
+    "participations": [
+        {
+            "end": "2010-08-01", 
+            "maker": "markpasc", 
+            "role": "Programmer", 
+            "start": "2010-01-01"
+        }, 
+        {
+            "end": "2010-08-01", 
+            "maker": "apparentlymart", 
+            "role": "Cheerleader, Occasional Programmer", 
+            "start": "2010-01-01"
+        }
+    ]
+}

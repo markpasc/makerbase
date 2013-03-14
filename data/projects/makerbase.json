@@ -1,0 +1,19 @@
+{
+    "avatar_url": "", 
+    "description": "IMDb for manipulators of bits and atoms", 
+    "html_url": "http://makerbase.neologasm.org/", 
+    "id": "makerbase", 
+    "name": "Makerbase", 
+    "participations": [
+        {
+            "maker": "markpasc", 
+            "role": "Programmer", 
+            "start": "2012-02-01"
+        }, 
+        {
+            "maker": "anildash", 
+            "role": "Came up with the idea", 
+            "start": "2011-11-01"
+        }
+    ]
+}

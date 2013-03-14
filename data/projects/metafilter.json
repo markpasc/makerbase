@@ -1,0 +1,19 @@
+{
+    "avatar_url": "https://twimg0-a.akamaihd.net/profile_images/2163267027/apple-touch-icon.png", 
+    "description": "A community weblog, and some other stuff", 
+    "html_url": "http://www.metafilter.com/", 
+    "id": "metafilter", 
+    "name": "MetaFilter", 
+    "participations": [
+        {
+            "maker": "matt-haughey", 
+            "role": "Founder", 
+            "start": "1999-07-01"
+        }, 
+        {
+            "maker": "paul-bausch", 
+            "role": "CTO", 
+            "start": "2006-05-01"
+        }
+    ]
+}

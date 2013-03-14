@@ -1,0 +1,15 @@
+{
+    "avatar_url": "http://creativecommons.org/images/deed/cc-logo.jpg", 
+    "description": "A new way to look at copyright and licensing your works", 
+    "html_url": "http://creativecommons.org/", 
+    "id": "creative-commons", 
+    "name": "Creative Commons", 
+    "participations": [
+        {
+            "end": "2005-10-01", 
+            "maker": "matt-haughey", 
+            "role": "Designer", 
+            "start": "2002-02-01"
+        }
+    ]
+}

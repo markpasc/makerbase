@@ -1,0 +1,14 @@
+{
+    "avatar_url": "http://healthmonth.com/images/tag-wheel.png", 
+    "description": "Try to stick to some healthy rules for a month, for fun.", 
+    "html_url": "http://healthmonth.com", 
+    "id": "healthmonth", 
+    "name": "Health Month", 
+    "participations": [
+        {
+            "maker": "busterbenson", 
+            "role": "Founder", 
+            "start": "2010-05-01"
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+    "avatar_url": "http://www.livejournalinc.com/images/logo.gif", 
+    "description": "Blogging before it was called that", 
+    "html_url": "http://www.livejournal.com/", 
+    "id": "livejournal", 
+    "name": "LiveJournal", 
+    "participations": [
+        {
+            "end": "2007-01-01", 
+            "maker": "apparentlymart", 
+            "role": "Programmer", 
+            "start": "1999-01-01"
+        }, 
+        {
+            "end": "2005-02-01", 
+            "maker": "bradfitz", 
+            "role": "Creator, Proprietor, Programmer", 
+            "start": "1997-01-01"
+        }
+    ]
+}

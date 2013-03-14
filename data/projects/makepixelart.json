@@ -1,0 +1,14 @@
+{
+    "avatar_url": "http://makepixelart.com/img/icon-128x128.png", 
+    "description": "An HTML5/Javascript application that makes it easier to make pixel art.", 
+    "html_url": "http://makepixelart.com", 
+    "id": "makepixelart", 
+    "name": "Make pixel art", 
+    "participations": [
+        {
+            "maker": "benbrown", 
+            "role": "Designer", 
+            "start": "2011-03-01"
+        }
+    ]
+}

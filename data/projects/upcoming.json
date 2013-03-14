@@ -1,0 +1,15 @@
+{
+    "avatar_url": "http://www.beerandblog.com/wp-content/uploads/upcoming-logo.jpg", 
+    "description": "One of the web's first and most innovative social events sites.", 
+    "html_url": "http://upcoming.org/", 
+    "id": "upcoming", 
+    "name": "Upcoming", 
+    "participations": [
+        {
+            "end": "2007-11-01", 
+            "maker": "waxpancake", 
+            "role": "Founded, developed,  and managed the community. Also sold it to Yahoo.", 
+            "start": "2003-09-01"
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "avatar_url": "http://fffff.at/fuckflickr/data/MISC/thumb/FAT-logo-redeux.png", 
+    "description": "An an organization dedicated to enriching the public domain through the research and development of creative technologies and media.", 
+    "html_url": "http://fffff.at", 
+    "id": "fat-lab", 
+    "name": "Free Art & Technology Lab (FAT Lab)", 
+    "participations": [
+        {
+            "maker": "gleuch", 
+            "role": "Virtual Research Fellow", 
+            "start": "2009-05-01"
+        }, 
+        {
+            "maker": "jamiew", 
+            "role": "Virtual Research Fellow", 
+            "start": "2007-09-01"
+        }
+    ], 
+    "reason": "Awesomesauce (& self)"
+}

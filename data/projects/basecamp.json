@@ -1,0 +1,15 @@
+{
+    "avatar_url": "http://basecamp.com/assets/images/logo.png", 
+    "description": "Basecamp is for storing, coordinating, and managing your company\u2019s projects, tasks, discussions, and decisions.", 
+    "html_url": "http://basecamp.com/", 
+    "id": "basecamp", 
+    "name": "Basecamp", 
+    "participations": [
+        {
+            "end": "2004-02-01", 
+            "maker": "anildash", 
+            "role": "I suggested that the app icon be tweaked to include a checkmark.", 
+            "start": "2004-02-01"
+        }
+    ]
+}

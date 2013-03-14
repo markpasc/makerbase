@@ -1,0 +1,14 @@
+{
+    "avatar_url": "http://narrowthegapp.com/images/narrow-the-gapp.jpg", 
+    "description": "A single-serving, data-driven web site about the gender wage gap in the U.S.", 
+    "html_url": "http://narrowthegapp.com", 
+    "id": "narrowthegapp", 
+    "name": "Narrow the Gapp", 
+    "participations": [
+        {
+            "maker": "ginatrapani", 
+            "role": "Creator", 
+            "start": "2012-03-01"
+        }
+    ]
+}

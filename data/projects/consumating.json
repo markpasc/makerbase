@@ -1,0 +1,21 @@
+{
+    "avatar_url": "http://onlinedating.wpengine.netdna-cdn.com/wp-content/uploads/consumatinglogo210n.gif", 
+    "description": "Consumating was a dating site for indie rock boys and girls in glasses.", 
+    "html_url": "http://consumating.com", 
+    "id": "consumating", 
+    "name": "Consumating", 
+    "participations": [
+        {
+            "end": "2007-04-01", 
+            "maker": "benbrown", 
+            "role": "Co-founded it and was deeply engaged with the community.", 
+            "start": "2003-03-01"
+        }, 
+        {
+            "end": "2005-11-01", 
+            "maker": "adammathes", 
+            "role": "Guy 2", 
+            "start": "2003-04-01"
+        }
+    ]
+}

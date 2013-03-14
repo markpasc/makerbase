@@ -1,0 +1,14 @@
+{
+    "avatar_url": "http://750words.com/images/badges/badge.penguin.png", 
+    "description": "Online private morning pages community.", 
+    "html_url": "http://750words.com", 
+    "id": "750words", 
+    "name": "750 Words", 
+    "participations": [
+        {
+            "maker": "busterbenson", 
+            "role": "Creator", 
+            "start": "2009-08-01"
+        }
+    ]
+}

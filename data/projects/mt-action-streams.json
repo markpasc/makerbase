@@ -1,0 +1,15 @@
+{
+    "avatar_url": "", 
+    "description": "Collect accounts & activity from across the web into MT", 
+    "html_url": "http://plugins.movabletype.org/action-streams/", 
+    "id": "mt-action-streams", 
+    "name": "Action Streams (Movable Type)", 
+    "participations": [
+        {
+            "end": "2011-10-01", 
+            "maker": "markpasc", 
+            "role": "Programmer", 
+            "start": "2008-02-01"
+        }
+    ]
+}

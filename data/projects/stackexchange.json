@@ -1,0 +1,14 @@
+{
+    "avatar_url": "http://cdn.sstatic.net/stackexchange/img/logos/se/se-icon.png", 
+    "description": "Stack Exchange is a network of 85 question & answer sites on diverse topics.", 
+    "html_url": "http://stackexchange.com/", 
+    "id": "stackexchange", 
+    "name": "Stack Exchange", 
+    "participations": [
+        {
+            "maker": "anildash", 
+            "role": "Helped brainstorm the original \"Stack Overflow\" name; Now I'm on the board.", 
+            "start": "2008-07-01"
+        }
+    ]
+}

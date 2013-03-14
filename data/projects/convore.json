@@ -1,0 +1,15 @@
+{
+    "avatar_url": "http://www.crunchbase.com/assets/images/resized/0012/1223/121223v5-max-250x250.png", 
+    "description": "A quick way to communicate with groups of friends in real-time", 
+    "html_url": "http://convore.com/", 
+    "id": "convore", 
+    "name": "Convore", 
+    "participations": [
+        {
+            "end": "2011-04-01", 
+            "maker": "markpasc", 
+            "role": "Contract iPhone programmer", 
+            "start": "2011-03-01"
+        }
+    ]
+}

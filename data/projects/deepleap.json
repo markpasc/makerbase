@@ -1,0 +1,21 @@
+{
+    "avatar_url": "http://dashes.com/anil/stuff/deepleapsticker.jpg", 
+    "description": "Deepleap was a contextual information assistant that wanted to help you browse the web better.  In 2000.", 
+    "html_url": "http://deepleap.com", 
+    "id": "deepleap", 
+    "name": "Deepleap", 
+    "participations": [
+        {
+            "end": "2000-08-01", 
+            "maker": "benbrown", 
+            "role": "Inventor", 
+            "start": "1998-11-01"
+        }, 
+        {
+            "end": "2000-08-01", 
+            "maker": "adammathes", 
+            "role": "Engineer", 
+            "start": "2000-05-01"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "avatar_url": "", 
+    "description": "Cover the world in ad banners.", 
+    "html_url": "http://grampa.co", 
+    "id": "grampa", 
+    "name": "Grampa", 
+    "participations": [
+        {
+            "maker": "torrez", 
+            "role": "Creator", 
+            "start": "2012-04-01"
+        }
+    ]
+}

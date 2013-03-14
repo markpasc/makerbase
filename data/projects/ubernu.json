@@ -1,0 +1,21 @@
+{
+    "avatar_url": "http://uber.nu/img/nuber.gif", 
+    "description": "A daily satirical site that ran, daily, from 2000-2005.", 
+    "html_url": "http://uber.nu", 
+    "id": "ubernu", 
+    "name": "Uber.nu", 
+    "participations": [
+        {
+            "end": "2005-12-01", 
+            "maker": "benbrown", 
+            "role": "Founder", 
+            "start": "2000-05-01"
+        }, 
+        {
+            "end": "2005-12-01", 
+            "maker": "adammathes", 
+            "role": "Founder", 
+            "start": "2000-05-01"
+        }
+    ]
+}

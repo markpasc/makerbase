@@ -1,0 +1,19 @@
+{
+    "avatar_url": "https://lh4.googleusercontent.com/-v3-NmrLLUJY/T3O0leYLHFI/AAAAAAAAAFA/MbBMr7VIfqA/s250-c/thinkup-logo.png", 
+    "description": "ThinkUp tracks your activity on social networks like Facebook, Twitter & Google+. It makes the web better.", 
+    "html_url": "http://thinkupapp.com/", 
+    "id": "thinkup", 
+    "name": "ThinkUp", 
+    "participations": [
+        {
+            "maker": "anildash", 
+            "role": "Co-founder, working on everything from running the business to hacking CSS.", 
+            "start": "2009-06-01"
+        }, 
+        {
+            "maker": "ginatrapani", 
+            "role": "Co-founder", 
+            "start": "2009-06-01"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "avatar_url": "", 
+    "description": "A unified search box in IE.", 
+    "html_url": "http://kottke.org/02/02/nutshell-from-mr-torrez-is", 
+    "id": "nutshell", 
+    "name": "Nutshell", 
+    "participations": [
+        {
+            "maker": "torrez", 
+            "role": "Creator", 
+            "start": "2002-02-01"
+        }
+    ]
+}

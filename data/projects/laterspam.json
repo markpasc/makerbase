@@ -1,0 +1,14 @@
+{
+    "avatar_url": "", 
+    "description": "Block, report to Twitter, and get a point for every spam mention you report.", 
+    "html_url": "http://laterspam.org/", 
+    "id": "laterspam", 
+    "name": "Laterspam", 
+    "participations": [
+        {
+            "maker": "torrez", 
+            "role": "Creator", 
+            "start": "2011-09-01"
+        }
+    ]
+}
